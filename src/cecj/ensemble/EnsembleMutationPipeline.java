@@ -1,6 +1,5 @@
 package cecj.ensemble;
 
-import cecj.ntuple.NTupleDefaults;
 import ec.BreedingPipeline;
 import ec.EvolutionState;
 import ec.Individual;
@@ -12,7 +11,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 	public static final int NUM_SOURCES = 1;
 
 	public Parameter defaultBase() {
-		return NTupleDefaults.base().push(P_MUTATION);
+		return EnsembleDefaults.base().push(P_MUTATION);
 	}
 
 	@Override

@@ -1,20 +1,18 @@
 package cecj.ensemble;
 
-import cecj.ntuple.NTupleDefaults;
-import cecj.ntuple.NTupleIndividual;
 import ec.BreedingPipeline;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.util.Parameter;
 
-public class EnsembleCrossoverPipeline extends BreedingPipeline {
+public class EnsembleInnerCrossoverPipeline extends BreedingPipeline {
 
-	public static final String P_CROSSOVER = "xover";
+	public static final String P_CROSSOVER = "inner-xover";
 	public static final int NUM_SOURCES = 2;
 
 	private EnsembleIndividual parents[];
 	
-	public EnsembleCrossoverPipeline() {
+	public EnsembleInnerCrossoverPipeline() {
 		parents = new EnsembleIndividual[2];
 	}
 	

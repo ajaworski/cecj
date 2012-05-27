@@ -9,9 +9,6 @@ public class EnsembleIndividual extends Individual {
 	public static final String P_ENSEMBLE_INDIVIDUAL = "ensemble-ind";
 
 	private Individual[] individualsEnsemble;
-	private double[] boundaries;
-	private int[] order;
-	
 
 	public Individual[] getIndividualsEnsemble() {
 		return individualsEnsemble;
@@ -19,22 +16,6 @@ public class EnsembleIndividual extends Individual {
 
 	public void setIndividualsEnsemble(Individual[] individualsEnsemble) {
 		this.individualsEnsemble = individualsEnsemble;
-	}
-
-	public double[] getBoundaries() {
-		return boundaries;
-	}
-
-	public void setBoundaries(double[] boundaries) {
-		this.boundaries = boundaries;
-	}
-
-	public int[] getOrder() {
-		return order;
-	}
-
-	public void setOrder(int[] order) {
-		this.order = order;
 	}
 
 	/**
@@ -65,16 +46,6 @@ public class EnsembleIndividual extends Individual {
 				return false;
 		}
 		
-		for (int i = 0; i < order.length; i++){
-			if (ensemble.order[i] != order[i])
-				return false;
-		}
-		
-		for (int i = 0; i < boundaries.length; i++){
-			if (ensemble.boundaries[i] != boundaries[i])
-				return false;
-		}
-		
 		return true;
 	}
 	
@@ -85,12 +56,6 @@ public class EnsembleIndividual extends Individual {
 		if (individualsEnsemble != null)
 			clone.individualsEnsemble = individualsEnsemble.clone();
 		
-		if (order != null)
-			clone.order = order.clone();
-		
-		if (boundaries != null)
-			clone.boundaries = boundaries.clone();		
-
 		return clone;
 	}
 
