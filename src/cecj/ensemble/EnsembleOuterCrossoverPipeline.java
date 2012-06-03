@@ -7,7 +7,7 @@ import ec.util.Parameter;
 
 public class EnsembleOuterCrossoverPipeline extends BreedingPipeline {
 
-	public static final String P_CROSSOVER = "outer-xover";
+	public static final String P_OUTER_CROSSOVER = "outer-xover";
 	public static final int NUM_SOURCES = 2;
 
 	private EnsembleIndividual parents[];
@@ -17,7 +17,7 @@ public class EnsembleOuterCrossoverPipeline extends BreedingPipeline {
 	}
 	
 	public Parameter defaultBase() {
-		return EnsembleDefaults.base().push(P_CROSSOVER);
+		return EnsembleDefaults.base().push(P_OUTER_CROSSOVER);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class EnsembleOuterCrossoverPipeline extends BreedingPipeline {
 	@Override
 	public int produce(int min, int max, int start, int subpopulation,
 			Individual[] inds, EvolutionState state, int thread) {
-		// XXX implementacja krzyzowania
+		// XXX implementacja zewnetrznego krzyzowania
 		return 0;
 	}
 

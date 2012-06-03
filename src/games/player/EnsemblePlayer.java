@@ -7,6 +7,7 @@ import ec.Individual;
 import ec.simple.SimpleFitness;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
+import ec.vector.DoubleVectorIndividual;
 import games.Board;
 
 public class EnsemblePlayer implements EvolvedPlayer {
@@ -26,8 +27,13 @@ public class EnsemblePlayer implements EvolvedPlayer {
 	}
 	
 	public double evaluate(Board board) {
-		//XXX evaluate
-		return 0;
+		double maxValue = 0;
+		double currValue;
+		for (EvolvedPlayer player : playersEnsemble){
+			currValue = player.evaluate(board);
+			maxValue = (currValue > maxValue) ? (currValue) : (maxValue);
+		}
+		return maxValue;
 	}
 
 	public void reset() {
@@ -48,9 +54,8 @@ public class EnsemblePlayer implements EvolvedPlayer {
 			
 			playersEnsemble = new EvolvedPlayer[ensemble.getIndividualsEnsemble().length];
 			
-			//TODO mapowanie z różnych indiwiduali na playerow
 			for (int i = 0; i < ensemble.getIndividualsEnsemble().length; i++){
-				WPCPlayer player = new WPCPlayer(8);
+				WPCPlayer player = new WPCPlayer(((DoubleVectorIndividual)ensemble.getIndividualsEnsemble()[i]).genome);
 				player.readFromIndividual(ensemble.getIndividualsEnsemble()[i]);
 				playersEnsemble[i] = player;
 			}

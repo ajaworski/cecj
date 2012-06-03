@@ -5,7 +5,7 @@ import ec.EvolutionState;
 import ec.Individual;
 import ec.util.Parameter;
 
-public class EnsembleMutationPipeline extends BreedingPipeline {
+public class EnsembleInnerMutationPipeline extends BreedingPipeline {
 
 	public static final String P_MUTATION = "mutate";
 	public static final int NUM_SOURCES = 1;
@@ -22,7 +22,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 	@Override
 	public int produce(int min, int max, int start, int subpopulation,
 			Individual[] inds, EvolutionState state, int thread) {
-		//XXX implementacja mutacji
+		//XXX implementacja wewnetrznej mutacji
 		return 0;
 	}
 
