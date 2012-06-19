@@ -39,4 +39,44 @@ public class EnsembleSpecies extends Species {
 		return EnsembleDefaults.base().push(P_ENSEMBLE_SPECIES);
 	}
 
+
+	public float getInnerMutationProbability() {
+		return innerMutationProbability;
+	}
+
+
+	public void setInnerMutationProbability(float innerMutationProbability) {
+		this.innerMutationProbability = innerMutationProbability;
+	}
+
+
+	public float getOuterMutationProbability() {
+		return outerMutationProbability;
+	}
+
+
+	public void setOuterMutationProbability(float outerMutationProbability) {
+		this.outerMutationProbability = outerMutationProbability;
+	}
+
+
+	public float getInnerXoverProbability() {
+		return innerXoverProbability;
+	}
+
+
+	public void setInnerXoverProbability(float innerXoverProbability) {
+		this.innerXoverProbability = innerXoverProbability;
+	}
+
+
+	public float getOuterXoverProbability() {
+		return outerXoverProbability;
+	}
+
+
+	public void setOuterXoverProbability(float outerXoverProbability) {
+		this.outerXoverProbability = outerXoverProbability;
+	}
+
 }
