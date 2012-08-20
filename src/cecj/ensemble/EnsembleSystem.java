@@ -5,6 +5,7 @@ import ec.Individual;
 import ec.Setup;
 import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
+import ec.vector.FloatVectorSpecies;
 
 public class EnsembleSystem implements Setup {
 	
@@ -18,6 +19,9 @@ public class EnsembleSystem implements Setup {
 		Individual[] individuals = new Individual[3];
 		for (int i = 0; i < 3; i++){
 			DoubleVectorIndividual newInd = new DoubleVectorIndividual();
+			newInd.species = new FloatVectorSpecies();
+			newInd.species.setup(state, newInd.defaultBase());
+			newInd.setup(state, newInd.defaultBase());
 			newInd.setGenomeLength(64);
 			newInd.reset(state, thread);
 			individuals[i] = newInd;

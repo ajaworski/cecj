@@ -42,7 +42,7 @@ public class EnsembleOuterCrossoverPipeline extends BreedingPipeline {
 		if (!(inds[start] instanceof EnsembleIndividual))
 			state.output.fatal("OuterCrossover should get EnsembleIndividuals as input");
 		
-		EnsembleSpecies species = (EnsembleSpecies) inds[start].species;
+		EnsembleSpecies species = (EnsembleSpecies) state.population.subpops[0].species;
 		
 		MersenneTwisterFast rand = state.random[thread];
 		if (rand.nextDouble() < species.getOuterXoverProbability()){
