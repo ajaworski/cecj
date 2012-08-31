@@ -13,21 +13,25 @@ import games.Board;
 public class EnsemblePlayer implements EvolvedPlayer {
 
 	private static final String P_ENSEMBLE_SYSTEM = "ensemble-system";
-	
+	private static final String P_SUBPLAYER = "subplayer";
+		
 	private EvolvedPlayer[] playersEnsemble;
+	private EvolvedPlayer subplayer = null;
 	
 	public void setup(EvolutionState state, Parameter base) {
 		EnsembleSystem system = new EnsembleSystem();
 		system.setup(state, base.push(P_ENSEMBLE_SYSTEM));
 
-		EnsembleIndividual ind = new EnsembleIndividual();
-		system.randomizeIndividual(state, 0, ind);
-
-		readFromIndividual(ind);		
+		subplayer = (EvolvedPlayer) state.parameters.getInstanceForParameter(base.push(P_SUBPLAYER), null, EvolvedPlayer.class);
+		
+//		EnsembleIndividual ind = new EnsembleIndividual();
+//		system.randomizeIndividual(state, 0, ind);
+//
+//		readFromIndividual(ind);		
 	}
 	
 	public double evaluate(Board board) {
-		double maxValue = 0;
+		double maxValue = Double.MIN_VALUE;
 		double currValue;
 		for (EvolvedPlayer player : playersEnsemble){
 			currValue = player.evaluate(board);
@@ -55,7 +59,13 @@ public class EnsemblePlayer implements EvolvedPlayer {
 			playersEnsemble = new EvolvedPlayer[ensemble.getIndividualsEnsemble().length];
 			
 			for (int i = 0; i < ensemble.getIndividualsEnsemble().length; i++){
-				WPCPlayer player = new WPCPlayer(((DoubleVectorIndividual)ensemble.getIndividualsEnsemble()[i]).genome);
+//				EvolvedPlayer player = new WPCPlayer(((DoubleVectorIndividual)ensemble.getIndividualsEnsemble()[i]).genome);
+				EvolvedPlayer player;
+				try {
+					player = (EvolvedPlayer) Class.forName(subplayer.getClass().getName()).newInstance();
+				} catch (Exception e) {
+					throw new IllegalArgumentException(e.getMessage());
+				}
 				player.readFromIndividual(ensemble.getIndividualsEnsemble()[i]);
 				playersEnsemble[i] = player;
 			}

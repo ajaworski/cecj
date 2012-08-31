@@ -75,6 +75,7 @@ public abstract class GamePlayerFitnessCalculator implements
 
 	public float calculateObjectiveFitness(EvolutionState state, Individual ind) {
 		EvolvedPlayer player = playerPrototype.createEmptyCopy();
+		player.setup(state, new Parameter("player"));
 		player.readFromIndividual(ind);
 
 		GameScenario scenario1 = getScenario(state, player);

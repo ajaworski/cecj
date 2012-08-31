@@ -2,19 +2,9 @@ package cecj.ensemble;
 
 import ec.EvolutionState;
 import ec.Individual;
-import ec.Population;
-import ec.Species;
-import ec.Subpopulation;
-import ec.simple.SimpleEvolutionState;
-import ec.util.MersenneTwisterFast;
-import ec.util.Output;
 import ec.util.Parameter;
-import ec.util.ParameterDatabase;
 import ec.vector.DoubleVectorIndividual;
 import ec.vector.FloatVectorSpecies;
-import games.player.EnsemblePlayer;
-import games.player.EvolvedPlayer;
-import games.player.LearningPlayer;
 
 public class EnsembleIndividual extends Individual {
 	
@@ -41,13 +31,15 @@ public class EnsembleIndividual extends Individual {
 			state.output.fatal("EnsembleIndividual requires a EnsembleSpecies", base, defaultBase());
 		}
 		
+		int ensembleSize = ((EnsembleSpecies)species).getEnsembleSize();
+		
 		//TODO parameters
 		FloatVectorSpecies fvSpecies = new FloatVectorSpecies();
 		fvSpecies.setup(state, base);
-		this.individualsEnsemble = new Individual[3];
-		for (int i = 0; i < 3; i++){
+		this.individualsEnsemble = new Individual[ensembleSize];
+		for (int i = 0; i < ensembleSize; i++){
 			this.individualsEnsemble[i] = new DoubleVectorIndividual();
-			this.individualsEnsemble[i].species = fvSpecies;
+			this.individualsEnsemble[i].species = fvSpecies;			
 			this.individualsEnsemble[i].setup(state, base);
 		}
 		
@@ -76,8 +68,11 @@ public class EnsembleIndividual extends Individual {
 	public Object clone() {
 		EnsembleIndividual clone = (EnsembleIndividual) (super.clone());
 		
-		if (individualsEnsemble != null)
-			clone.individualsEnsemble = individualsEnsemble.clone();
+		if (individualsEnsemble != null){
+			clone.individualsEnsemble = new Individual[individualsEnsemble.length];
+			for (int i = 0; i < individualsEnsemble.length; i++)
+			clone.individualsEnsemble[i] = (Individual) individualsEnsemble[i].clone();
+		}
 		
 		return clone;
 	}

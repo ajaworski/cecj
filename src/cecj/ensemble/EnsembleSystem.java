@@ -14,21 +14,23 @@ public class EnsembleSystem implements Setup {
 	}
 	
 	public void randomizeIndividual(EvolutionState state, int thread, EnsembleIndividual ind) {
+		//TODO parameters
+				
+//				this.individualsEnsemble = new Individual[3];
+//				for (int i = 0; i < 3; i++){
+//					this.individualsEnsemble[i] = new DoubleVectorIndividual();
+//					this.individualsEnsemble[i].species = fvSpecies;
+//					this.individualsEnsemble[i].setup(state, base);
+//					((DoubleVectorIndividual)(this.individualsEnsemble[i])).reset(state, 0);
+//				}
+		
 		//TODO add parameters
 		//Create individuals in ensemble
-		Individual[] individuals = new Individual[3];
-		for (int i = 0; i < 3; i++){
-			DoubleVectorIndividual newInd = new DoubleVectorIndividual();
-			newInd.species = new FloatVectorSpecies();
-			newInd.species.setup(state, newInd.defaultBase());
-			newInd.setup(state, newInd.defaultBase());
-			newInd.setGenomeLength(64);
-			newInd.reset(state, thread);
-			individuals[i] = newInd;
+		
+		for (int i = 0; i < ind.getIndividualsEnsemble().length; i++){
+			((DoubleVectorIndividual)(ind.getIndividualsEnsemble()[i])).reset(state, thread);
 		}
 		
-		//Set variables in ensemble
-		ind.setIndividualsEnsemble(individuals);
 	}
 
 }

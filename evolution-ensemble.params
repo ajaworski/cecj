@@ -8,7 +8,7 @@ breedthreads	= 1
 evalthreads		= 1
 seed		= 1987
 
-pop				= ec.Population
+pop			= ec.Population
 state			= ec.simple.SimpleEvolutionState
 init			= ec.simple.SimpleInitializer
 finish			= ec.simple.SimpleFinisher
@@ -18,20 +18,23 @@ eval			= ec.simple.SimpleEvaluator
 breed			= ec.simple.SimpleBreeder
 breed.elite.0	= 5
 
-generations				= 1000
+generations				= 100
 checkpoint				= false
 prefix					= ec
 checkpoint-modulo		= 1
 
 #DODANE
+ensemble.species.outer-xover-prob	= 1.0
+ensemble.species.outer-mutation-prob	= 1.0
+ensemble.species.ensemble-size		= 10
 
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.1
 vector.species.crossover-type	= one
 vector.species.mutation-type	= gauss
 vector.species.mutation-stdev	= 1.0
-vector.species.min-gene		= 0.0
-vector.species.max-gene		= 1000.0
+vector.species.min-gene		= -1.0
+vector.species.max-gene		= 1.0
 
 
 pop.subpop.0.species.ind.pipe				= cecj.ensemble.EnsembleOuterMutationPipeline
@@ -45,17 +48,17 @@ pop.subpop.0.species.ind.fitness			= ec.simple.SimpleFitness
 
 #END
 
-pop.subpops								= 1
+pop.subpops					= 1
 
-pop.subpop.0							= ec.Subpopulation
-pop.subpop.0.size 						= 50
+pop.subpop.0					= ec.Subpopulation
+pop.subpop.0.size 				= 50
 pop.subpop.0.duplicate-retries 			= 0
 
-pop.subpop.0.species 					 = cecj.ensemble.EnsembleSpecies
-pop.subpop.0.species.ind				 = cecj.ensemble.EnsembleIndividual
-pop.subpop.0.species.fitness 			 = ec.simple.SimpleFitness
+pop.subpop.0.species				= cecj.ensemble.EnsembleSpecies
+pop.subpop.0.species.ind			= cecj.ensemble.EnsembleIndividual
+pop.subpop.0.species.fitness 			= ec.simple.SimpleFitness
 
-pop.subpop.0.species.subspecies			 = ec.vector.FloatVectorSpecies
+pop.subpop.0.species.subspecies			= ec.vector.FloatVectorSpecies
 
 pop.subpop.0.species.pipe				= cecj.ensemble.EnsembleOuterMutationPipeline
 pop.subpop.0.species.pipe.source.0			= cecj.ensemble.EnsembleOuterCrossoverPipeline
@@ -64,9 +67,9 @@ pop.subpop.0.species.pipe.source.0.source.1		= ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.0.size 	= 5
 pop.subpop.0.species.pipe.source.0.source.1.size 	= 5
 
-game = cecj.app.othello.OthelloGame
-player = games.player.EnsemblePlayer
-player.subplayer = games.player.WPCPlayer
+game 			= cecj.app.othello.OthelloGame
+player 			= games.player.EnsemblePlayer
+player.subplayer 	= games.player.WPCPlayer
 
 eval.problem										= cecj.app.SimpleBoardGameProblem
 eval.problem.fitness-calc  							= cecj.app.othello.OthelloHeuristicPlayer
