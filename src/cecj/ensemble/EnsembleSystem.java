@@ -1,6 +1,7 @@
 package cecj.ensemble;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import ec.EvolutionState;
 import ec.Individual;
@@ -17,7 +18,7 @@ public class EnsembleSystem implements Setup {
 	}
 	
 	public void randomizeIndividual(EvolutionState state, int thread, EnsembleIndividual ind) {
-		//TODO randomize ensemble itself - boundaries + order
+		//randomize boundaries
 		MersenneTwisterFast rand = state.random[thread];
 		int value;		
 		boolean out;
@@ -37,7 +38,27 @@ public class EnsembleSystem implements Setup {
 			ind.getBoundaries()[i] = value;
 		}
 		Arrays.sort(ind.getBoundaries());
+		for(int i = 0; i < ind.getBoundaries().length / 2; i++)
+		{
+		    int temp = ind.getBoundaries()[i];
+		    ind.getBoundaries()[i] = ind.getBoundaries()[ind.getBoundaries().length - i - 1];
+		    ind.getBoundaries()[ind.getBoundaries().length - i - 1] = temp;
+		}
 		
+		//randomize order
+		int end = rand.nextInt(ind.getIndividualsEnsemble().length);
+		for (int i = 0; i < end; i++){
+			int x, y;
+			do{
+				x = rand.nextInt(ind.getIndividualsEnsemble().length);
+				y = rand.nextInt(ind.getIndividualsEnsemble().length);
+			} while(x == y);
+			Individual temp = ind.getIndividualsEnsemble()[x];
+		    ind.getIndividualsEnsemble()[x] = ind.getIndividualsEnsemble()[y];
+		    ind.getIndividualsEnsemble()[y] = temp;
+		}
+		
+		//randomize each individual in an ensemble
 		for (int i = 0; i < ind.getIndividualsEnsemble().length; i++){
 			((DoubleVectorIndividual)(ind.getIndividualsEnsemble()[i])).reset(state, thread);
 		}
