@@ -35,7 +35,7 @@ public class EnsembleOuterMutationPipeline extends BreedingPipeline {
 		EnsembleSpecies species = (EnsembleSpecies) inds[start].species;
 		
 		MersenneTwisterFast rand = state.random[thread];
-		if (rand.nextDouble() < species.getOuterMutationProbability()){
+		if (rand.nextDouble() < species.getOuterMutationSwapProbability()){
 			int x = 0, y = 0;
 			do {
 				x = rand.nextInt(((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length);
@@ -44,6 +44,10 @@ public class EnsembleOuterMutationPipeline extends BreedingPipeline {
 			Individual tmp = ((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[y];
 			((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[y] = ((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[x];
 			((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[x] = tmp;
+		}
+		
+		if (rand.nextDouble() < species.getOuterMutationBoundariesChangeProbability()){
+			//TODO implementacja
 		}
 		
 		return n;

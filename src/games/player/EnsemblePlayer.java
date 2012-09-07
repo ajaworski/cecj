@@ -10,13 +10,13 @@ import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
 import games.Board;
 
-public class EnsemblePlayer implements EvolvedPlayer {
+public abstract class EnsemblePlayer implements EvolvedPlayer {
 
 	private static final String P_ENSEMBLE_SYSTEM = "ensemble-system";
 	private static final String P_SUBPLAYER = "subplayer";
 		
-	private EvolvedPlayer[] playersEnsemble;
-	private EvolvedPlayer subplayer = null;
+	protected EvolvedPlayer[] playersEnsemble;
+	protected EvolvedPlayer subplayer = null;
 	
 	public void setup(EvolutionState state, Parameter base) {
 		EnsembleSystem system = new EnsembleSystem();
@@ -29,26 +29,10 @@ public class EnsemblePlayer implements EvolvedPlayer {
 //
 //		readFromIndividual(ind);		
 	}
-	
-	public double evaluate(Board board) {
-		double maxValue = Double.MIN_VALUE;
-		double currValue;
-		for (EvolvedPlayer player : playersEnsemble){
-			currValue = player.evaluate(board);
-			maxValue = (currValue > maxValue) ? (currValue) : (maxValue);
-		}
-		return maxValue;
-	}
 
 	public void reset() {
 		for (EvolvedPlayer player : playersEnsemble)
 			player.reset();
-	}
-
-
-
-	public EvolvedPlayer createEmptyCopy() {
-		return new EnsemblePlayer();
 	}
 
 	public void readFromIndividual(Individual ind)
