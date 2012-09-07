@@ -9,7 +9,6 @@ import ec.Setup;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
-import ec.vector.FloatVectorSpecies;
 
 public class EnsembleSystem implements Setup {
 	
@@ -37,13 +36,7 @@ public class EnsembleSystem implements Setup {
 			} while (!out);
 			ind.getBoundaries()[i] = value;
 		}
-		Arrays.sort(ind.getBoundaries());
-		for(int i = 0; i < ind.getBoundaries().length / 2; i++)
-		{
-		    int temp = ind.getBoundaries()[i];
-		    ind.getBoundaries()[i] = ind.getBoundaries()[ind.getBoundaries().length - i - 1];
-		    ind.getBoundaries()[ind.getBoundaries().length - i - 1] = temp;
-		}
+		Arrays.sort(ind.getBoundaries(), Collections.reverseOrder());
 		
 		//randomize order
 		int end = rand.nextInt(ind.getIndividualsEnsemble().length);

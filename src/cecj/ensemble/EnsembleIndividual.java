@@ -11,7 +11,7 @@ public class EnsembleIndividual extends Individual {
 	public static final String P_ENSEMBLE_INDIVIDUAL = "ensemble-ind";
 
 	private Individual[] individualsEnsemble;
-	private int[] boundaries;
+	private Integer[] boundaries;
 
 	public Individual[] getIndividualsEnsemble() {
 		return individualsEnsemble;
@@ -21,11 +21,11 @@ public class EnsembleIndividual extends Individual {
 		this.individualsEnsemble = individualsEnsemble;
 	}
 
-	public int[] getBoundaries() {
+	public Integer[] getBoundaries() {
 		return boundaries;
 	}
 
-	public void setBoundaries(int[] boundaries) {
+	public void setBoundaries(Integer[] boundaries) {
 		this.boundaries = boundaries;
 	}
 
@@ -46,7 +46,7 @@ public class EnsembleIndividual extends Individual {
 		FloatVectorSpecies fvSpecies = new FloatVectorSpecies();
 		fvSpecies.setup(state, base);
 		this.individualsEnsemble = new Individual[ensembleSize];
-		this.boundaries = new int[ensembleSize - 1];
+		this.boundaries = new Integer[ensembleSize - 1];
 		for (int i = 0; i < ensembleSize; i++){
 			this.individualsEnsemble[i] = new DoubleVectorIndividual();
 			this.individualsEnsemble[i].species = fvSpecies;			

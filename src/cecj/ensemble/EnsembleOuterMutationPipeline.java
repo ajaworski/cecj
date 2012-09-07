@@ -47,7 +47,33 @@ public class EnsembleOuterMutationPipeline extends BreedingPipeline {
 		}
 		
 		if (rand.nextDouble() < species.getOuterMutationBoundariesChangeProbability()){
-			//TODO implementacja
+			boolean out;
+			int index;
+			boolean increase;
+			do{
+				out = true;
+				index = rand.nextInt(((EnsembleIndividual)inds[start]).getBoundaries().length);
+				increase = rand.nextBoolean(); 
+				//increase == true means increasing the value, decreasing otherwise
+				if (increase){
+					if (index == 0 && ((EnsembleIndividual)inds[start]).getBoundaries()[index] >= 62){ //XXX hardcoded!!!
+						out = false;
+					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + 1 == ((EnsembleIndividual)inds[start]).getBoundaries()[index - 1]){
+						out = false;
+					}
+				} else {
+					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length && ((EnsembleIndividual)inds[start]).getBoundaries()[index] <= 1){ //XXX hardcoded!!!
+						out = false;
+					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] - 1 == ((EnsembleIndividual)inds[start]).getBoundaries()[index + 1]){
+						out = false;
+					}										
+				}
+			} while (!out);
+			if (increase){
+				((EnsembleIndividual)inds[start]).getBoundaries()[index] += 1;
+			} else {
+				((EnsembleIndividual)inds[start]).getBoundaries()[index] -= 1;
+			}
 		}
 		
 		return n;
