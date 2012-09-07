@@ -56,14 +56,16 @@ public class EnsembleOuterMutationPipeline extends BreedingPipeline {
 				increase = rand.nextBoolean(); 
 				//increase == true means increasing the value, decreasing otherwise
 				if (increase){
-					if (index == 0 && ((EnsembleIndividual)inds[start]).getBoundaries()[index] >= 62){ //XXX hardcoded!!!
-						out = false;
+					if (index == 0){ //XXX hardcoded!!!
+						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] >= 62)
+							out = false;
 					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + 1 == ((EnsembleIndividual)inds[start]).getBoundaries()[index - 1]){
 						out = false;
 					}
 				} else {
-					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length && ((EnsembleIndividual)inds[start]).getBoundaries()[index] <= 1){ //XXX hardcoded!!!
-						out = false;
+					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length - 1){ //XXX hardcoded!!!
+						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] <= 1)
+							out = false;
 					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] - 1 == ((EnsembleIndividual)inds[start]).getBoundaries()[index + 1]){
 						out = false;
 					}										

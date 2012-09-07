@@ -16,6 +16,7 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 	private static final String P_SUBPLAYER = "subplayer";
 		
 	protected EvolvedPlayer[] playersEnsemble;
+	protected Integer[] boundaries;
 	protected EvolvedPlayer subplayer = null;
 	
 	public void setup(EvolutionState state, Parameter base) {
@@ -41,9 +42,9 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 			EnsembleIndividual ensemble = ((EnsembleIndividual) ind);
 			
 			playersEnsemble = new EvolvedPlayer[ensemble.getIndividualsEnsemble().length];
+			boundaries = new Integer[ensemble.getBoundaries().length];
 			
 			for (int i = 0; i < ensemble.getIndividualsEnsemble().length; i++){
-//				EvolvedPlayer player = new WPCPlayer(((DoubleVectorIndividual)ensemble.getIndividualsEnsemble()[i]).genome);
 				EvolvedPlayer player;
 				try {
 					player = (EvolvedPlayer) Class.forName(subplayer.getClass().getName()).newInstance();
@@ -52,6 +53,10 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 				}
 				player.readFromIndividual(ensemble.getIndividualsEnsemble()[i]);
 				playersEnsemble[i] = player;
+			}
+			
+			for (int i = 0; i < ensemble.getBoundaries().length; i++){
+				boundaries[i] = new Integer(ensemble.getBoundaries()[i]);
 			}
 			
 		} else {
