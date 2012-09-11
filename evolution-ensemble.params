@@ -31,6 +31,8 @@ ensemble.species.mutation.outer.max-bound-change	= 3
 
 ensemble.species.mutation.inner.prob			= 1.0
 ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
+ensemble.species.xover.inner.prob			= 1.0
+ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
 ensemble.species.ensemble-size				= 10
 

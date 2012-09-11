@@ -1,5 +1,6 @@
 package cecj.ensemble;
 
+import ec.BreedingPipeline;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Species;
@@ -24,11 +25,15 @@ public class EnsembleSpecies extends Species {
 	
 	public final static String P_PROB = "prob";
 	public final static String P_STDEV = "stdev";
+	public final static String P_CLASS = "class";
 
 	public static final String P_SYSTEM = "system";
 
 	private float innerXoverProbability;
 	private float innerMutationProbability;
+	
+	private String innerMutationClass;
+	private String innerXoverClass;
 	
 	private float outerXoverProbability;
 	
@@ -46,7 +51,25 @@ public class EnsembleSpecies extends Species {
 		this.innerMutationProbability = (float) Math.max(this.innerMutationProbability, 0.0);
 		
 		if (innerMutationProbability > 0.0){
-			
+			this.innerMutationClass = state.parameters.getString(defaultBase().push(P_MUTATION).push(P_INNER).push(P_CLASS),null);
+			if (this.innerMutationClass == null)
+				state.output.fatal("Must specify class for inner mutation");
+			try{
+				BreedingPipeline bp = (BreedingPipeline) Class.forName(this.innerMutationClass).newInstance();
+			} catch (Exception e){
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
+		
+		if (innerXoverProbability > 0.0){
+			this.innerXoverClass = state.parameters.getString(defaultBase().push(P_XOVER).push(P_INNER).push(P_CLASS),null);
+			if (this.innerXoverClass == null)
+				state.output.fatal("Must specify class for inner xover");
+			try{
+				BreedingPipeline bp = (BreedingPipeline) Class.forName(this.innerXoverClass).newInstance();
+			} catch (Exception e){
+				throw new IllegalArgumentException(e.getMessage());
+			}
 		}
 		
 		this.outerXoverProbability = state.parameters.getFloatWithMax(defaultBase().push(P_XOVER).push(P_OUTER).push(P_PROB),null,0.0,1.0);
@@ -134,6 +157,22 @@ public class EnsembleSpecies extends Species {
 	public void setOuterMutationMaxBoundaryChange(
 			int outerMutationMaxBoundaryChange) {
 		this.outerMutationMaxBoundaryChange = outerMutationMaxBoundaryChange;
+	}
+
+	public String getInnerMutationClass() {
+		return innerMutationClass;
+	}
+
+	public void setInnerMutationClass(String innerMutationClass) {
+		this.innerMutationClass = innerMutationClass;
+	}
+
+	public String getInnerXoverClass() {
+		return innerXoverClass;
+	}
+
+	public void setInnerXoverClass(String innerXoverClass) {
+		this.innerXoverClass = innerXoverClass;
 	}
 
 
