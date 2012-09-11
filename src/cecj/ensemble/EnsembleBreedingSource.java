@@ -54,7 +54,10 @@ public class EnsembleBreedingSource extends BreedingSource{
 		if (n > max)
 			n = max;
 		
-		//TODO finish implementation
+		for (int i = start; i < start + n; i++){
+			inds[i] = ensembleIndividual.getIndividualsEnsemble()[currentIndex];
+			currentIndex = (currentIndex + 1) % ensembleIndividual.getIndividualsEnsemble().length;
+		}
 		
 		return n;
 	}
@@ -68,6 +71,7 @@ public class EnsembleBreedingSource extends BreedingSource{
 	}
 
 	public void setEnsembleIndividual(EnsembleIndividual ensembleIndividual) {
+		this.currentIndex = 0;
 		this.ensembleIndividual = ensembleIndividual;
 	}
 

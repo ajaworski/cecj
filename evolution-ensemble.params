@@ -36,7 +36,6 @@ ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
 ensemble.species.ensemble-size				= 10
 
-#Just to make initialization possible, it isn't used at all
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.1
 vector.species.crossover-type	= one

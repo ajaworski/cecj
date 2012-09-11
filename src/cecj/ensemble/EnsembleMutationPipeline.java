@@ -1,13 +1,17 @@
 package cecj.ensemble;
 
 import ec.BreedingPipeline;
+import ec.BreedingSource;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 
 public class EnsembleMutationPipeline extends BreedingPipeline {
-
+	private BreedingPipeline innerMutationPipeline = null;
+	private EnsembleBreedingSource ensembleBreedingSource = null;
+	private Individual[] innerMutatedInds;
+	
 	public static final String P_MUTATION = "mutate";
 	public static final int NUM_SOURCES = 1;
 
@@ -80,6 +84,35 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 				((EnsembleIndividual)inds[start]).getBoundaries()[index] += ammount;
 			} else {
 				((EnsembleIndividual)inds[start]).getBoundaries()[index] -= ammount;
+			}
+		}
+		
+		//Inner mutation
+		if (species.getInnerMutationProbability() > 0.0){
+			if (ensembleBreedingSource == null)
+				ensembleBreedingSource = new EnsembleBreedingSource();
+			
+			if (innerMutationPipeline == null){
+				try{
+					innerMutationPipeline = (BreedingPipeline) Class.forName(species.getInnerMutationClass()).newInstance();
+					innerMutationPipeline.likelihood = (float) 1.0;
+					innerMutationPipeline.sources = new BreedingSource[1];
+					innerMutationPipeline.sources[0] = ensembleBreedingSource;
+				} catch (Exception e){
+					throw new IllegalArgumentException(e.getMessage());
+				}
+			}
+			
+			if (innerMutatedInds == null){
+				innerMutatedInds = new Individual[1];
+			}
+			
+			ensembleBreedingSource.setEnsembleIndividual((EnsembleIndividual)inds[start]);
+			for (int i = 0; i < ((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length; i++){
+				if (rand.nextBoolean(species.getInnerMutationProbability())){
+					innerMutationPipeline.produce(1, 1, 0, subpopulation, innerMutatedInds, state, thread);
+					((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[i] = (Individual) innerMutatedInds[0].clone();
+				}
 			}
 		}
 		
