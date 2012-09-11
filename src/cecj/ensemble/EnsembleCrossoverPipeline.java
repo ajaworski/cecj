@@ -8,14 +8,14 @@ import ec.Individual;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 
-public class EnsembleOuterCrossoverPipeline extends BreedingPipeline {
+public class EnsembleCrossoverPipeline extends BreedingPipeline {
 
 	public static final String P_OUTER_CROSSOVER = "outer-xover";
 	public static final int NUM_SOURCES = 2;
 
 	private EnsembleIndividual[] parents;
 	
-	public EnsembleOuterCrossoverPipeline() {
+	public EnsembleCrossoverPipeline() {
 		parents = new EnsembleIndividual[2];
 	}
 	

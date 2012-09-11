@@ -43,6 +43,10 @@ public class EnsembleSpecies extends Species {
 		this.innerMutationProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_INNER).push(P_PROB),null,0.0,1.0);
 		this.innerMutationProbability = (float) Math.max(this.innerMutationProbability, 0.0);
 		
+		if (innerMutationProbability > 0.0){
+			
+		}
+		
 		this.outerXoverProbability = state.parameters.getFloatWithMax(defaultBase().push(P_XOVER).push(P_OUTER).push(P_PROB),null,0.0,1.0);
 		this.outerXoverProbability = (float) Math.max(this.outerXoverProbability, 0.0);
 		this.outerMutationSwapProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_SWAP_PROB),null,0.0,1.0);

@@ -6,7 +6,7 @@ import ec.Individual;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 
-public class EnsembleOuterMutationPipeline extends BreedingPipeline {
+public class EnsembleMutationPipeline extends BreedingPipeline {
 
 	public static final String P_MUTATION = "mutate";
 	public static final int NUM_SOURCES = 1;
@@ -32,7 +32,10 @@ public class EnsembleOuterMutationPipeline extends BreedingPipeline {
 		if (!(inds[start] instanceof EnsembleIndividual))
 			state.output.fatal("OuterMutation should get EnsembleIndividuals as input");
 		
-		EnsembleSpecies species = (EnsembleSpecies) inds[start].species;
+		if (!(state.population.subpops[subpopulation].species instanceof EnsembleSpecies))
+			state.output.fatal("OuterCrossover should work on EnsembleSpecies");
+		
+		EnsembleSpecies species = (EnsembleSpecies) state.population.subpops[subpopulation].species;
 		
 		MersenneTwisterFast rand = state.random[thread];
 		if (rand.nextDouble() < species.getOuterMutationSwapProbability()){

@@ -2,13 +2,17 @@ package cecj.ensemble;
 
 import ec.EvolutionState;
 import ec.Individual;
+import ec.Species;
 import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
 import ec.vector.FloatVectorSpecies;
+import games.player.EvolvedPlayer;
 
 public class EnsembleIndividual extends Individual {
 	
 	public static final String P_ENSEMBLE_INDIVIDUAL = "ensemble-ind";
+	
+	public static final String P_SUBSPECIES = "subspecies";
 
 	private Individual[] individualsEnsemble;
 	private Integer[] boundaries;
@@ -40,16 +44,16 @@ public class EnsembleIndividual extends Individual {
 			state.output.fatal("EnsembleIndividual requires a EnsembleSpecies", base, defaultBase());
 		}
 		
+		Species subspecies = (Species) state.parameters.getInstanceForParameter(base.push(P_SUBSPECIES), null, Species.class);
+		subspecies.setup(state, base);
+		
 		int ensembleSize = ((EnsembleSpecies)species).getEnsembleSize();
 		
-		//TODO parameters
-		FloatVectorSpecies fvSpecies = new FloatVectorSpecies();
-		fvSpecies.setup(state, base);
 		this.individualsEnsemble = new Individual[ensembleSize];
 		this.boundaries = new Integer[ensembleSize - 1];
 		for (int i = 0; i < ensembleSize; i++){
 			this.individualsEnsemble[i] = new DoubleVectorIndividual();
-			this.individualsEnsemble[i].species = fvSpecies;			
+			this.individualsEnsemble[i].species = subspecies;			
 			this.individualsEnsemble[i].setup(state, base);
 			
 			if (i < ensembleSize - 1)
