@@ -38,7 +38,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 		EnsembleSpecies species = (EnsembleSpecies) state.population.subpops[subpopulation].species;
 		
 		MersenneTwisterFast rand = state.random[thread];
-		if (rand.nextDouble() < species.getOuterMutationSwapProbability()){
+		if (rand.nextBoolean(species.getOuterMutationSwapProbability())){
 			int x = 0, y = 0;
 			do {
 				x = rand.nextInt(((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length);
@@ -49,35 +49,37 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 			((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[x] = tmp;
 		}
 		
-		if (rand.nextDouble() < species.getOuterMutationBoundariesChangeProbability()){
+		if (rand.nextBoolean(species.getOuterMutationBoundariesChangeProbability())){
 			boolean out;
 			int index;
+			int ammount;
 			boolean increase;
 			do{
 				out = true;
 				index = rand.nextInt(((EnsembleIndividual)inds[start]).getBoundaries().length);
-				increase = rand.nextBoolean(); 
+				increase = rand.nextBoolean();
+				ammount = rand.nextInt(species.getOuterMutationMaxBoundaryChange()) + 1;
 				//increase == true means increasing the value, decreasing otherwise
 				if (increase){
 					if (index == 0){ //XXX hardcoded!!!
 						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] >= 62)
 							out = false;
-					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + 1 == ((EnsembleIndividual)inds[start]).getBoundaries()[index - 1]){
+					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + ammount >= ((EnsembleIndividual)inds[start]).getBoundaries()[index - 1]){
 						out = false;
 					}
 				} else {
 					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length - 1){ //XXX hardcoded!!!
-						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] <= 1)
+						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] <= ammount)
 							out = false;
-					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] - 1 == ((EnsembleIndividual)inds[start]).getBoundaries()[index + 1]){
+					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] - ammount <= ((EnsembleIndividual)inds[start]).getBoundaries()[index + 1]){
 						out = false;
 					}										
 				}
 			} while (!out);
 			if (increase){
-				((EnsembleIndividual)inds[start]).getBoundaries()[index] += 1;
+				((EnsembleIndividual)inds[start]).getBoundaries()[index] += ammount;
 			} else {
-				((EnsembleIndividual)inds[start]).getBoundaries()[index] -= 1;
+				((EnsembleIndividual)inds[start]).getBoundaries()[index] -= ammount;
 			}
 		}
 		

@@ -44,8 +44,8 @@ public class EnsembleIndividual extends Individual {
 			state.output.fatal("EnsembleIndividual requires a EnsembleSpecies", base, defaultBase());
 		}
 		
-		Species subspecies = (Species) state.parameters.getInstanceForParameter(base.push(P_SUBSPECIES), null, Species.class);
-		subspecies.setup(state, base);
+		Species subspecies = (Species) state.parameters.getInstanceForParameter(base.pop().push(P_SUBSPECIES), null, Species.class);
+		subspecies.setup(state, base.pop().push(P_SUBSPECIES));
 		
 		int ensembleSize = ((EnsembleSpecies)species).getEnsembleSize();
 		

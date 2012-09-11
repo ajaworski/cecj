@@ -65,7 +65,7 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 			EnsembleSpecies species = (EnsembleSpecies) state.population.subpops[0].species;
 			
 			MersenneTwisterFast rand = state.random[thread];
-			if (rand.nextDouble() < species.getOuterXoverProbability()){
+			if (rand.nextBoolean(species.getOuterXoverProbability())){
 				int cuttingPoint = rand.nextInt(((EnsembleIndividual)parents[0]).getIndividualsEnsemble().length - 2) + 1;
 				crossover(parents[0], parents[1], cuttingPoint);
 			}
