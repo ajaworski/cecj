@@ -3,6 +3,7 @@ package cecj.ensemble;
 import java.util.Arrays;
 
 import ec.BreedingPipeline;
+import ec.BreedingSource;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.util.MersenneTwisterFast;
@@ -14,6 +15,9 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 	public static final int NUM_SOURCES = 2;
 
 	private EnsembleIndividual[] parents;
+	private EnsembleBreedingSource[] ensembleBreedingSources = null;
+	private BreedingPipeline innerXoverPipeline = null;
+	private Individual[] innerXoveredInds = null;
 	
 	public EnsembleCrossoverPipeline() {
 		parents = new EnsembleIndividual[2];
@@ -68,6 +72,39 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 			if (rand.nextBoolean(species.getOuterXoverProbability())){
 				int cuttingPoint = rand.nextInt(((EnsembleIndividual)parents[0]).getIndividualsEnsemble().length - 2) + 1;
 				crossover(parents[0], parents[1], cuttingPoint);
+			}
+			
+			//Inner crossover
+			if (species.getInnerXoverProbability() > 0.0){
+				if (ensembleBreedingSources == null){
+					ensembleBreedingSources = new EnsembleBreedingSource[2];
+					ensembleBreedingSources[0] = new EnsembleBreedingSource();
+					ensembleBreedingSources[1] = new EnsembleBreedingSource();
+				}
+				
+				if (innerXoverPipeline == null){
+					try{
+						innerXoverPipeline = (BreedingPipeline) Class.forName(species.getInnerXoverClass()).newInstance();
+						innerXoverPipeline.likelihood = (float) 1.0;
+						innerXoverPipeline.sources = ensembleBreedingSources;
+					} catch (Exception e){
+						throw new IllegalArgumentException(e.getMessage());
+					}
+				}
+				
+				if (innerXoveredInds == null){
+					innerXoveredInds = new Individual[2];
+				}
+				
+				ensembleBreedingSources[0].setEnsembleIndividual(parents[0]);
+				ensembleBreedingSources[1].setEnsembleIndividual(parents[1]);
+				for (int j = 0; j < ((EnsembleIndividual)parents[0]).getIndividualsEnsemble().length; j++){
+					if (rand.nextBoolean(species.getInnerXoverProbability())){
+						innerXoverPipeline.produce(2, 2, 0, subpopulation, innerXoveredInds, state, thread);
+						parents[0].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[0].clone();
+						parents[1].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[1].clone();
+					}
+				}
 			}
 	
 			parents[0].evaluated = false;

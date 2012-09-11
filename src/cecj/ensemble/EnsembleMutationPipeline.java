@@ -10,7 +10,7 @@ import ec.util.Parameter;
 public class EnsembleMutationPipeline extends BreedingPipeline {
 	private BreedingPipeline innerMutationPipeline = null;
 	private EnsembleBreedingSource ensembleBreedingSource = null;
-	private Individual[] innerMutatedInds;
+	private Individual[] innerMutatedInds = null;
 	
 	public static final String P_MUTATION = "mutate";
 	public static final int NUM_SOURCES = 1;
@@ -115,7 +115,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 				}
 			}
 		}
-		
+		inds[start].evaluated = false;		
 		return n;
 	}
 
