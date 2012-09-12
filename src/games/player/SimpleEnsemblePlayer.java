@@ -9,13 +9,29 @@ public class SimpleEnsemblePlayer extends EnsemblePlayer {
 	}
 	
 	public double evaluate(Board board) {
-		double maxValue = Double.MIN_VALUE;
-		double currValue;
-		for (EvolvedPlayer player : playersEnsemble){
-			currValue = player.evaluate(board);
-			maxValue = (currValue > maxValue) ? (currValue) : (maxValue);
+		double returnValue = 0;
+		if (this.combinationMethod == COMBINATION_MAX){
+			returnValue = Double.MIN_VALUE;
+			double currValue;
+			for (EvolvedPlayer player : playersEnsemble){
+				currValue = player.evaluate(board);
+				returnValue = (currValue > returnValue) ? (currValue) : (returnValue);
+			}
+		} else if (this.combinationMethod == COMBINATION_AVG){
+			returnValue = 0;
+			for (EvolvedPlayer player : playersEnsemble){
+				returnValue += player.evaluate(board);
+			}
+			returnValue = returnValue / playersEnsemble.length;
+		} else if (this.combinationMethod == COMBINATION_MIN){
+			returnValue = Double.MAX_VALUE;
+			double currValue;
+			for (EvolvedPlayer player : playersEnsemble){
+				currValue = player.evaluate(board);
+				returnValue = (currValue < returnValue) ? (currValue) : (returnValue);
+			}
 		}
-		return maxValue;
+		return returnValue;
 	}
 	
 }

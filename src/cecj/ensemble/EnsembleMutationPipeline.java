@@ -65,14 +65,14 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 				ammount = rand.nextInt(species.getOuterMutationMaxBoundaryChange()) + 1;
 				//increase == true means increasing the value, decreasing otherwise
 				if (increase){
-					if (index == 0){ //XXX hardcoded!!!
-						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] >= 62)
+					if (index == 0){
+						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + ammount > 62)  //XXX hardcoded!!!
 							out = false;
 					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + ammount >= ((EnsembleIndividual)inds[start]).getBoundaries()[index - 1]){
 						out = false;
 					}
 				} else {
-					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length - 1){ //XXX hardcoded!!!
+					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length - 1){
 						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] <= ammount)
 							out = false;
 					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] - ammount <= ((EnsembleIndividual)inds[start]).getBoundaries()[index + 1]){
@@ -87,12 +87,46 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 			}
 		}
 		
+		if (rand.nextBoolean(species.getOuterMutationGroupsChangeProbability())){
+			boolean out;
+			int index;
+			int ammount;
+			boolean increase;
+			do{
+				out = true;
+				index = rand.nextInt(((EnsembleIndividual)inds[start]).getGroups().length);
+				increase = rand.nextBoolean();
+				ammount = rand.nextInt(species.getOuterMutationMaxBoundaryChange()) + 1;
+				//increase == true means increasing the value, decreasing otherwise
+				if (increase){
+					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length - 1){
+						if (((EnsembleIndividual)inds[start]).getGroups()[index] + ammount >= ((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length - 1)
+							out = false;
+					} else if (((EnsembleIndividual)inds[start]).getGroups()[index] + ammount >= ((EnsembleIndividual)inds[start]).getGroups()[index + 1]){
+						out = false;
+					}
+				} else {
+					if (index == 0){
+						if (((EnsembleIndividual)inds[start]).getGroups()[index] - ammount < 0)
+							out = false;
+					} else if (((EnsembleIndividual)inds[start]).getGroups()[index] - ammount <= ((EnsembleIndividual)inds[start]).getGroups()[index - 1]){
+						out = false;
+					}										
+				}
+			} while (!out);
+			if (increase){
+				((EnsembleIndividual)inds[start]).getGroups()[index] += ammount;
+			} else {
+				((EnsembleIndividual)inds[start]).getGroups()[index] -= ammount;
+			}
+		}
+		
 		//Inner mutation
 		if (species.getInnerMutationProbability() > 0.0){
-			if (ensembleBreedingSource == null)
+			//Proxy, done only once
+			if (ensembleBreedingSource == null){
 				ensembleBreedingSource = new EnsembleBreedingSource();
-			
-			if (innerMutationPipeline == null){
+				
 				try{
 					innerMutationPipeline = (BreedingPipeline) Class.forName(species.getInnerMutationClass()).newInstance();
 					innerMutationPipeline.likelihood = (float) 1.0;
@@ -101,9 +135,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 				} catch (Exception e){
 					throw new IllegalArgumentException(e.getMessage());
 				}
-			}
-			
-			if (innerMutatedInds == null){
+				
 				innerMutatedInds = new Individual[1];
 			}
 			
@@ -111,7 +143,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 			for (int i = 0; i < ((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length; i++){
 				if (rand.nextBoolean(species.getInnerMutationProbability())){
 					innerMutationPipeline.produce(1, 1, 0, subpopulation, innerMutatedInds, state, thread);
-					((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[i] = (Individual) innerMutatedInds[0].clone();
+					((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[i] = (Individual) innerMutatedInds[0];
 				}
 			}
 		}

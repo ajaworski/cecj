@@ -11,7 +11,7 @@ public class EnsembleSpecies extends Species {
 	public static final String P_ENSEMBLE_SPECIES = "species";
 
 	public static final String P_ENSEMBLE_SIZE = "ensemble-size";
-	private int ensembleSize;
+	public static final String P_BOUNDARIES_COUNT = "boundaries-count";
 	
 	public final static String P_MUTATION = "mutation";
 	public final static String P_XOVER = "xover";
@@ -20,6 +20,8 @@ public class EnsembleSpecies extends Species {
 	public final static String P_OUTER = "outer";
 	
 	public final static String P_SWAP_PROB = "swap-prob";
+	public final static String P_GROUP_PROB = "group-change-prob";
+	public final static String P_GROUP_MAX = "max-group-change";
 	public final static String P_BOUND_PROB = "bound-change-prob";
 	public final static String P_BOUND_MAX = "max-bound-change";
 	
@@ -28,6 +30,9 @@ public class EnsembleSpecies extends Species {
 	public final static String P_CLASS = "class";
 
 	public static final String P_SYSTEM = "system";
+	
+	private int ensembleSize;
+	private int boundariesCount;
 
 	private float innerXoverProbability;
 	private float innerMutationProbability;
@@ -40,6 +45,8 @@ public class EnsembleSpecies extends Species {
 	private float outerMutationSwapProbability;
 	private float outerMutationBoundariesChangeProbability;
 	private int outerMutationMaxBoundaryChange;
+	private float outerMutationGroupsChangeProbability;
+	private int outerMutationMaxGroupChange;
 	
 	private EnsembleSystem ensembleSystem;
 
@@ -80,9 +87,17 @@ public class EnsembleSpecies extends Species {
 		this.outerMutationBoundariesChangeProbability = (float) Math.max(this.outerMutationBoundariesChangeProbability, 0.0);
 		this.outerMutationMaxBoundaryChange = state.parameters.getInt(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_MAX),null,1);
 		this.outerMutationMaxBoundaryChange = (int) Math.max(this.outerMutationMaxBoundaryChange, 1);
+		this.outerMutationGroupsChangeProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_PROB),null,0.0,1.0);
+		this.outerMutationGroupsChangeProbability = (float) Math.max(this.outerMutationGroupsChangeProbability, 0.0);
+		this.outerMutationMaxGroupChange = state.parameters.getInt(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_MAX),null,1);
+		this.outerMutationMaxGroupChange = (int) Math.max(this.outerMutationMaxGroupChange, 1);
 		
-		this.ensembleSize = state.parameters.getInt(defaultBase().push(P_ENSEMBLE_SIZE), null, 3);
+		this.ensembleSize = state.parameters.getIntWithDefault(defaultBase().push(P_ENSEMBLE_SIZE), null, 3);
 		this.ensembleSize = (int) Math.max(this.ensembleSize, 3);
+		
+		this.boundariesCount = state.parameters.getIntWithDefault(defaultBase().push(P_BOUNDARIES_COUNT), null, (this.ensembleSize - 1));
+		this.boundariesCount = (int) Math.max(this.boundariesCount, 1);
+		this.boundariesCount = (int) Math.min(this.boundariesCount, this.ensembleSize - 1);
 		super.setup(state, base);
 				
 		ensembleSystem = new EnsembleSystem();
@@ -107,6 +122,14 @@ public class EnsembleSpecies extends Species {
 
 	public void setEnsembleSize(int ensembleSize) {
 		this.ensembleSize = ensembleSize;
+	}
+
+	public int getBoundariesCount() {
+		return boundariesCount;
+	}
+
+	public void setBoundariesCount(int boundariesCount) {
+		this.boundariesCount = boundariesCount;
 	}
 
 	public float getInnerXoverProbability() {
@@ -157,6 +180,23 @@ public class EnsembleSpecies extends Species {
 	public void setOuterMutationMaxBoundaryChange(
 			int outerMutationMaxBoundaryChange) {
 		this.outerMutationMaxBoundaryChange = outerMutationMaxBoundaryChange;
+	}
+
+	public float getOuterMutationGroupsChangeProbability() {
+		return outerMutationGroupsChangeProbability;
+	}
+
+	public void setOuterMutationGroupsChangeProbability(
+			float outerMutationGroupsChangeProbability) {
+		this.outerMutationGroupsChangeProbability = outerMutationGroupsChangeProbability;
+	}
+
+	public int getOuterMutationMaxGroupChange() {
+		return outerMutationMaxGroupChange;
+	}
+
+	public void setOuterMutationMaxGroupChange(int outerMutationMaxGroupChange) {
+		this.outerMutationMaxGroupChange = outerMutationMaxGroupChange;
 	}
 
 	public String getInnerMutationClass() {

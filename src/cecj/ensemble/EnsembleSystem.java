@@ -38,6 +38,23 @@ public class EnsembleSystem implements Setup {
 		}
 		Arrays.sort(ind.getBoundaries(), Collections.reverseOrder());
 		
+		//Randomize groups
+		for (int i = 0; i < ind.getGroups().length; i++){
+			do{
+				value = rand.nextInt(ind.getIndividualsEnsemble().length - 1);
+				out = true;
+				for (int j = 0; j < i; j++){
+					if (ind.getGroups()[j] == value){
+						out = false;
+						break;
+					}
+				}
+				
+			} while (!out);
+			ind.getGroups()[i] = value;
+		}
+		Arrays.sort(ind.getGroups());
+		
 		//randomize order
 		int end = rand.nextInt(ind.getIndividualsEnsemble().length);
 		for (int i = 0; i < end; i++){
@@ -50,6 +67,8 @@ public class EnsembleSystem implements Setup {
 		    ind.getIndividualsEnsemble()[x] = ind.getIndividualsEnsemble()[y];
 		    ind.getIndividualsEnsemble()[y] = temp;
 		}
+		
+		
 		
 		//randomize each individual in an ensemble
 		for (int i = 0; i < ind.getIndividualsEnsemble().length; i++){

@@ -1,12 +1,14 @@
 parent.0                = /home/jawora/ECJ/ec/simple/simple.params
 
-verbosity				= 0
+verbosity		= 0
 print-unused-params 	= true
 print-unaccesed-params 	= true
 
-breedthreads	= 1
-evalthreads		= 1
-seed		= 1987
+breedthreads	= 2
+evalthreads	= 2
+seed.0		= 1987
+seed.1		= 3102
+#seed.2		= 2819
 
 pop			= ec.Population
 state			= ec.simple.SimpleEvolutionState
@@ -18,29 +20,32 @@ eval			= ec.simple.SimpleEvaluator
 breed			= ec.simple.SimpleBreeder
 breed.elite.0	= 5
 
-generations				= 100
-checkpoint				= false
-prefix					= ec
+generations			= 200
+checkpoint			= false
+prefix				= ec
 checkpoint-modulo		= 1
 
 #ENSEMBLES
-ensemble.species.xover.outer.prob			= 1.25
-ensemble.species.mutation.outer.swap-prob		= 0.1
-ensemble.species.mutation.outer.bound-change-prob	= 1.0
-ensemble.species.mutation.outer.max-bound-change	= 3
+ensemble.species.xover.outer.prob			= 0.1
+ensemble.species.mutation.outer.swap-prob		= 0.2
+ensemble.species.mutation.outer.bound-change-prob	= 0.25
+ensemble.species.mutation.outer.max-bound-change	= 5
+ensemble.species.mutation.outer.group-change-prob	= 1.0
+ensemble.species.mutation.outer.max-group-change	= 5
 
-ensemble.species.mutation.inner.prob			= 1.0
+ensemble.species.mutation.inner.prob			= 0.1
 ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
-ensemble.species.xover.inner.prob			= 1.0
+ensemble.species.xover.inner.prob			= 0.1
 ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
-ensemble.species.ensemble-size				= 10
+ensemble.species.ensemble-size				= 15
+ensemble.species.boundaries-count			= 3
 
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.1
 vector.species.crossover-type	= one
 vector.species.mutation-type	= gauss
-vector.species.mutation-stdev	= 1.0
+vector.species.mutation-stdev	= 0.05
 vector.species.min-gene		= -1.0
 vector.species.max-gene		= 1.0
 pop.subpop.0.species.subspecies.pipe			= ec.vector.breed.VectorMutationPipeline
@@ -72,8 +77,9 @@ pop.subpop.0.species.pipe.source.0.source.0.size 	= 5
 pop.subpop.0.species.pipe.source.0.source.1.size 	= 5
 
 game 			= cecj.app.othello.OthelloGame
-player 			= games.player.BoundariesEnsemblePlayer
+player 			= games.player.HybridEnsemblePlayer
 player.subplayer 	= games.player.WPCPlayer
+player.combination	= max
 
 eval.problem						= cecj.app.SimpleBoardGameProblem
 eval.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer

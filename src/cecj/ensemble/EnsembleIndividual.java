@@ -16,6 +16,7 @@ public class EnsembleIndividual extends Individual {
 
 	private Individual[] individualsEnsemble;
 	private Integer[] boundaries;
+	private Integer[] groups;
 
 	public Individual[] getIndividualsEnsemble() {
 		return individualsEnsemble;
@@ -33,6 +34,14 @@ public class EnsembleIndividual extends Individual {
 		this.boundaries = boundaries;
 	}
 
+	public Integer[] getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Integer[] groups) {
+		this.groups = groups;
+	}
+
 	/**
 	 * This method is called only once - on a prototype individual stored in the species class.
 	 */
@@ -48,16 +57,20 @@ public class EnsembleIndividual extends Individual {
 		subspecies.setup(state, base.pop().push(P_SUBSPECIES));
 		
 		int ensembleSize = ((EnsembleSpecies)species).getEnsembleSize();
+		int boundariesCount = ((EnsembleSpecies)species).getBoundariesCount();
 		
 		this.individualsEnsemble = new Individual[ensembleSize];
-		this.boundaries = new Integer[ensembleSize - 1];
+		this.boundaries = new Integer[boundariesCount];
+		this.groups = new Integer[boundariesCount];
 		for (int i = 0; i < ensembleSize; i++){
 			this.individualsEnsemble[i] = new DoubleVectorIndividual();
 			this.individualsEnsemble[i].species = subspecies;			
 			this.individualsEnsemble[i].setup(state, base);
 			
-			if (i < ensembleSize - 1)
+			if (i < boundariesCount){
 				this.boundaries[i] = i;
+				this.groups[i] = i;
+			}
 		}
 		
 	}
@@ -88,7 +101,13 @@ public class EnsembleIndividual extends Individual {
 		if (individualsEnsemble != null){
 			clone.individualsEnsemble = new Individual[individualsEnsemble.length];
 			for (int i = 0; i < individualsEnsemble.length; i++)
-			clone.individualsEnsemble[i] = (Individual) individualsEnsemble[i].clone();
+				clone.individualsEnsemble[i] = (Individual) individualsEnsemble[i].clone();
+			clone.boundaries = new Integer[boundaries.length];
+			for (int i = 0; i < boundaries.length; i++)
+				clone.boundaries[i] = new Integer(boundaries[i]);
+			clone.groups = new Integer[groups.length];
+			for (int i = 0; i < groups.length; i++)
+				clone.groups[i] = new Integer(groups[i]);
 		}
 		
 		return clone;

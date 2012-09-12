@@ -11,19 +11,35 @@ import ec.vector.DoubleVectorIndividual;
 import games.Board;
 
 public abstract class EnsemblePlayer implements EvolvedPlayer {
-
+	public static final int COMBINATION_MAX = 0x0;
+	public static final int COMBINATION_AVG = 0x1;
+	public static final int COMBINATION_MIN = 0x2;
+	
 	private static final String P_ENSEMBLE_SYSTEM = "ensemble-system";
 	private static final String P_SUBPLAYER = "subplayer";
+	private static final String P_COMBINATION = "combination";
 		
 	protected EvolvedPlayer[] playersEnsemble;
 	protected Integer[] boundaries;
+	protected Integer[] groups;
 	protected EvolvedPlayer subplayer = null;
+	protected int combinationMethod;
 	
 	public void setup(EvolutionState state, Parameter base) {
 		EnsembleSystem system = new EnsembleSystem();
 		system.setup(state, base.push(P_ENSEMBLE_SYSTEM));
 
 		subplayer = (EvolvedPlayer) state.parameters.getInstanceForParameter(base.push(P_SUBPLAYER), null, EvolvedPlayer.class);
+		
+		String combString = state.parameters.getStringWithDefault(base.push(P_COMBINATION), null, "max");
+		if (combString.equals("max"))
+			this.combinationMethod = COMBINATION_MAX;
+		else if (combString.equals("avg"))
+			this.combinationMethod = COMBINATION_AVG;
+		else if (combString.equals("min"))
+			this.combinationMethod = COMBINATION_MIN;
+		else
+			state.output.fatal("Combination method should be one of: max, avg, min");
 		
 //		EnsembleIndividual ind = new EnsembleIndividual();
 //		system.randomizeIndividual(state, 0, ind);
@@ -43,6 +59,7 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 			
 			playersEnsemble = new EvolvedPlayer[ensemble.getIndividualsEnsemble().length];
 			boundaries = new Integer[ensemble.getBoundaries().length];
+			groups = new Integer[ensemble.getGroups().length];
 			
 			for (int i = 0; i < ensemble.getIndividualsEnsemble().length; i++){
 				EvolvedPlayer player;
@@ -57,6 +74,10 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 			
 			for (int i = 0; i < ensemble.getBoundaries().length; i++){
 				boundaries[i] = new Integer(ensemble.getBoundaries()[i]);
+			}
+			
+			for (int i = 0; i < ensemble.getGroups().length; i++){
+				groups[i] = new Integer(ensemble.getGroups()[i]);
 			}
 			
 		} else {

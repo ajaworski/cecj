@@ -76,13 +76,12 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 			
 			//Inner crossover
 			if (species.getInnerXoverProbability() > 0.0){
+				//Proxy, done only once
 				if (ensembleBreedingSources == null){
 					ensembleBreedingSources = new EnsembleBreedingSource[2];
 					ensembleBreedingSources[0] = new EnsembleBreedingSource();
 					ensembleBreedingSources[1] = new EnsembleBreedingSource();
-				}
-				
-				if (innerXoverPipeline == null){
+					
 					try{
 						innerXoverPipeline = (BreedingPipeline) Class.forName(species.getInnerXoverClass()).newInstance();
 						innerXoverPipeline.likelihood = (float) 1.0;
@@ -90,9 +89,7 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 					} catch (Exception e){
 						throw new IllegalArgumentException(e.getMessage());
 					}
-				}
-				
-				if (innerXoveredInds == null){
+					
 					innerXoveredInds = new Individual[2];
 				}
 				
@@ -101,8 +98,8 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 				for (int j = 0; j < ((EnsembleIndividual)parents[0]).getIndividualsEnsemble().length; j++){
 					if (rand.nextBoolean(species.getInnerXoverProbability())){
 						innerXoverPipeline.produce(2, 2, 0, subpopulation, innerXoveredInds, state, thread);
-						parents[0].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[0].clone();
-						parents[1].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[1].clone();
+						parents[0].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[0];
+						parents[1].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[1];
 					}
 				}
 			}
