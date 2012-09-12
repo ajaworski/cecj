@@ -54,6 +54,7 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 		}
 		
 		if (rand.nextBoolean(species.getOuterMutationBoundariesChangeProbability())){
+			int tries = 10;
 			boolean out;
 			int index;
 			int ammount;
@@ -79,20 +80,24 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 						out = false;
 					}										
 				}
-			} while (!out);
-			if (increase){
-				((EnsembleIndividual)inds[start]).getBoundaries()[index] += ammount;
-			} else {
-				((EnsembleIndividual)inds[start]).getBoundaries()[index] -= ammount;
+			} while (!out && tries >= 0);
+			if (out){
+				if (increase){
+					((EnsembleIndividual)inds[start]).getBoundaries()[index] += ammount;
+				} else {
+					((EnsembleIndividual)inds[start]).getBoundaries()[index] -= ammount;
+				}
 			}
 		}
 		
 		if (rand.nextBoolean(species.getOuterMutationGroupsChangeProbability())){
 			boolean out;
+			int tries = 10;
 			int index;
 			int ammount;
 			boolean increase;
 			do{
+				tries--;
 				out = true;
 				index = rand.nextInt(((EnsembleIndividual)inds[start]).getGroups().length);
 				increase = rand.nextBoolean();
@@ -113,11 +118,13 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 						out = false;
 					}										
 				}
-			} while (!out);
-			if (increase){
-				((EnsembleIndividual)inds[start]).getGroups()[index] += ammount;
-			} else {
-				((EnsembleIndividual)inds[start]).getGroups()[index] -= ammount;
+			} while (!out && tries >= 0);
+			if (out){
+				if (increase){
+					((EnsembleIndividual)inds[start]).getGroups()[index] += ammount;
+				} else {
+					((EnsembleIndividual)inds[start]).getGroups()[index] -= ammount;
+				}
 			}
 		}
 		

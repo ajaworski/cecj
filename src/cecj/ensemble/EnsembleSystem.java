@@ -21,8 +21,10 @@ public class EnsembleSystem implements Setup {
 		MersenneTwisterFast rand = state.random[thread];
 		int value;		
 		boolean out;
+		int tries;
 		
 		for (int i = 0; i < ind.getBoundaries().length; i++){
+			tries = 100;
 			do{
 				value = rand.nextInt(62) + 1; //XXX hardcoded!!!
 				out = true;
@@ -32,14 +34,19 @@ public class EnsembleSystem implements Setup {
 						break;
 					}
 				}
-				
-			} while (!out);
-			ind.getBoundaries()[i] = value;
+				tries--;
+			} while (!out && tries >= 0);
+			if (out)
+				ind.getBoundaries()[i] = value;
+			else
+				state.output.fatal("Couldn't randomize boundaries. Consider lowering boundaries count.");
+			
 		}
 		Arrays.sort(ind.getBoundaries(), Collections.reverseOrder());
 		
 		//Randomize groups
 		for (int i = 0; i < ind.getGroups().length; i++){
+			tries = 100;
 			do{
 				value = rand.nextInt(ind.getIndividualsEnsemble().length - 1);
 				out = true;
@@ -49,9 +56,12 @@ public class EnsembleSystem implements Setup {
 						break;
 					}
 				}
-				
-			} while (!out);
-			ind.getGroups()[i] = value;
+				tries--;
+			} while (!out && tries >= 0);
+			if (out)
+				ind.getGroups()[i] = value;
+			else
+				state.output.fatal("Couldn't randomize groups bounds. Consider lowering group count.");
 		}
 		Arrays.sort(ind.getGroups());
 		
