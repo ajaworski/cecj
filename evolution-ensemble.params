@@ -4,14 +4,14 @@ verbosity		= 0
 print-unused-params 	= true
 print-unaccesed-params 	= true
 
-breedthreads	= 2
-evalthreads	= 2
+breedthreads	= 1
+evalthreads	= 1
 seed.0		= 1987
 seed.1		= 3102
 #seed.2		= 2819
 
 pop			= ec.Population
-state			= ec.simple.SimpleEvolutionState
+state			= cecj.statistics.SimpleEvolutionStateWithEvalCount
 init			= ec.simple.SimpleInitializer
 finish			= ec.simple.SimpleFinisher
 stat 			= ec.simple.SimpleStatistics
@@ -20,22 +20,22 @@ eval			= ec.simple.SimpleEvaluator
 breed			= ec.simple.SimpleBreeder
 breed.elite.0	= 5
 
-generations			= 200
+generations			= 500
 checkpoint			= false
 prefix				= ec
 checkpoint-modulo		= 1
 
 #ENSEMBLES
-ensemble.species.xover.outer.prob			= 0.1
-ensemble.species.mutation.outer.swap-prob		= 0.2
-ensemble.species.mutation.outer.bound-change-prob	= 0.25
-ensemble.species.mutation.outer.max-bound-change	= 5
-ensemble.species.mutation.outer.group-change-prob	= 1.0
-ensemble.species.mutation.outer.max-group-change	= 5
+ensemble.species.xover.outer.prob			= 0.7
+ensemble.species.mutation.outer.swap-prob		= 0.1
+ensemble.species.mutation.outer.bound-change-prob	= 0.1
+ensemble.species.mutation.outer.max-bound-change	= 3
+ensemble.species.mutation.outer.group-change-prob	= 0.1
+ensemble.species.mutation.outer.max-group-change	= 3
 
-ensemble.species.mutation.inner.prob			= 0.1
+ensemble.species.mutation.inner.prob			= 0.05
 ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
-ensemble.species.xover.inner.prob			= 0.1
+ensemble.species.xover.inner.prob			= 0.2
 ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
 ensemble.species.ensemble-size				= 15
@@ -86,5 +86,16 @@ eval.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer
 eval.problem.fitness-calc.play-both 			= true
 eval.problem.fitness-calc.repeats			= 50
 eval.problem.fitness-calc.evaluated-randomness 		= 0.1
-eval.problem.fitness-calc.evaluator-randomness 		= 0.1
 
+stat.file		= out.stat
+stat.num-children 	= 1
+
+stat.child.0 					= cecj.statistics.BestObjectiveFitnessStatistics
+stat.child.0.fitness-file			= fitness_heur.stat
+stat.child.0.ind-file				= ind.stat
+stat.child.0.fitness-calc 			= cecj.app.othello.OthelloHeuristicPlayer
+stat.child.0.fitness-calc.repeats		= 500
+stat.child.0.fitness-calc.play-both 		= true
+stat.child.0.fitness-calc.evaluated-randomness 	= 0.1
+stat.child.0.fitness-calc.evaluator-randomness 	= 0.1
+stat.child.0.frequency				= 8

@@ -35,12 +35,14 @@ public class HybridEnsemblePlayer extends EnsemblePlayer{
 				EvolvedPlayer player = playersEnsemble[i];
 				currValue = player.evaluate(board);
 				returnValue = (currValue > returnValue) ? (currValue) : (returnValue);
+				evalCount++;
 			}
 		} else if (this.combinationMethod == COMBINATION_AVG){
 			returnValue = 0;
 			for (int i = groupStart; i <= groupEnd; i++){
 				EvolvedPlayer player = playersEnsemble[i];
 				returnValue += player.evaluate(board);
+				evalCount++;
 			}
 			returnValue = returnValue / playersEnsemble.length;
 		} else if (this.combinationMethod == COMBINATION_MIN){
@@ -50,6 +52,7 @@ public class HybridEnsemblePlayer extends EnsemblePlayer{
 				EvolvedPlayer player = playersEnsemble[i];
 				currValue = player.evaluate(board);
 				returnValue = (currValue < returnValue) ? (currValue) : (returnValue);
+				evalCount++;
 			}
 		}
 		return returnValue;

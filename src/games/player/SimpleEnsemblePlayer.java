@@ -16,11 +16,13 @@ public class SimpleEnsemblePlayer extends EnsemblePlayer {
 			for (EvolvedPlayer player : playersEnsemble){
 				currValue = player.evaluate(board);
 				returnValue = (currValue > returnValue) ? (currValue) : (returnValue);
+				evalCount++;
 			}
 		} else if (this.combinationMethod == COMBINATION_AVG){
 			returnValue = 0;
 			for (EvolvedPlayer player : playersEnsemble){
 				returnValue += player.evaluate(board);
+				evalCount++;
 			}
 			returnValue = returnValue / playersEnsemble.length;
 		} else if (this.combinationMethod == COMBINATION_MIN){
@@ -29,6 +31,7 @@ public class SimpleEnsemblePlayer extends EnsemblePlayer {
 			for (EvolvedPlayer player : playersEnsemble){
 				currValue = player.evaluate(board);
 				returnValue = (currValue < returnValue) ? (currValue) : (returnValue);
+				evalCount++;
 			}
 		}
 		return returnValue;

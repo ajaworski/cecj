@@ -6,6 +6,7 @@ import ec.BreedingPipeline;
 import ec.BreedingSource;
 import ec.EvolutionState;
 import ec.Individual;
+import ec.util.MersenneTwister;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 
@@ -32,11 +33,13 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 		return NUM_SOURCES;
 	}
 	
-	private void crossover(EnsembleIndividual a, EnsembleIndividual b, int cuttingPoint){
-		for (int i = cuttingPoint; i < a.getIndividualsEnsemble().length; i++){
-			Individual tmp = b.getIndividualsEnsemble()[i];
-			b.getIndividualsEnsemble()[i] = a.getIndividualsEnsemble()[i];
-			a.getIndividualsEnsemble()[i] = tmp;
+	private void crossover(EnsembleIndividual a, EnsembleIndividual b, MersenneTwisterFast rand){
+		for (int i = 0; i < a.getIndividualsEnsemble().length; i++){
+			if (rand.nextBoolean(0.5)){
+				Individual tmp = b.getIndividualsEnsemble()[i];
+				b.getIndividualsEnsemble()[i] = a.getIndividualsEnsemble()[i];
+				a.getIndividualsEnsemble()[i] = tmp;
+			}
 		}
 	}
 	
@@ -68,10 +71,10 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 			
 			EnsembleSpecies species = (EnsembleSpecies) state.population.subpops[0].species;
 			
+			//outer crossover
 			MersenneTwisterFast rand = state.random[thread];
 			if (rand.nextBoolean(species.getOuterXoverProbability())){
-				int cuttingPoint = rand.nextInt(((EnsembleIndividual)parents[0]).getIndividualsEnsemble().length - 2) + 1;
-				crossover(parents[0], parents[1], cuttingPoint);
+				crossover(parents[0], parents[1], rand);
 			}
 			
 			//Inner crossover

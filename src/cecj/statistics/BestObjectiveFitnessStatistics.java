@@ -89,8 +89,13 @@ public class BestObjectiveFitnessStatistics extends Statistics {
 			float objectiveFitnessOfSubjectivelyBest = fitnessCalc.calculateObjectiveFitness(state,
 					maxSubjectiveFitnessInd);
 
-			state.output.println(state.generation + "\t" + objectiveFitnessOfSubjectivelyBest
-					+ "\t" + maxSubjectiveFitness, fitnessStatisticsLog);
+			if (state instanceof SimpleEvolutionStateWithEvalCount){
+				state.output.println(state.generation + "\t" + ((SimpleEvolutionStateWithEvalCount)state).getEvalCount() + "\t" + objectiveFitnessOfSubjectivelyBest
+						+ "\t" + maxSubjectiveFitness, fitnessStatisticsLog);
+			} else {
+				state.output.println(state.generation + "\t" + objectiveFitnessOfSubjectivelyBest
+						+ "\t" + maxSubjectiveFitness, fitnessStatisticsLog);
+			}
 			state.output.println("Generation: " + state.generation, individualsLog);
 			maxSubjectiveFitnessInd.printIndividual(state, individualsLog);
 		}

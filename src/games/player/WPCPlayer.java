@@ -11,13 +11,15 @@ import ec.vector.DoubleVectorIndividual;
 import ec.vector.VectorIndividual;
 import games.Board;
 
-public class WPCPlayer implements EvolvedPlayer {
+public class WPCPlayer implements EvolvedPlayer, IEvalCountingPlayer {
 
 	private int boardSize;
 
 	private double[] wpc;
 
 	private double[][] traces;
+	
+	private long evalCount;
 	
 	public WPCPlayer() {
 		
@@ -26,11 +28,13 @@ public class WPCPlayer implements EvolvedPlayer {
 	public WPCPlayer(int boardSize) {
 		this.boardSize = boardSize;
 		this.wpc = new double[boardSize * boardSize];
+		this.evalCount = 0;
 	}
 
 	public WPCPlayer(double[] wpc) {
 		this.boardSize = (int) Math.sqrt(wpc.length);
 		this.wpc = wpc;
+		this.evalCount = 0;
 	}
 
 	public static WPCPlayer readFromString(String string) {		
@@ -46,6 +50,7 @@ public class WPCPlayer implements EvolvedPlayer {
 	public void setup(EvolutionState state, Parameter base) {
 		this.boardSize = 8;
 		this.wpc = new double[64];
+		this.evalCount = 0;
 	}
 
 	public double getValue(int row, int col) {
@@ -114,6 +119,7 @@ public class WPCPlayer implements EvolvedPlayer {
 				result += board.getValueAt(row, col) * getValue(row, col);
 			}
 		}
+		evalCount++;
 		return result;
 	}
 
@@ -140,5 +146,9 @@ public class WPCPlayer implements EvolvedPlayer {
 
 	public void reset() {
 		Arrays.fill(wpc, 0.0);
+	}
+
+	public long getEvalCount() {
+		return this.evalCount;
 	}
 }

@@ -10,7 +10,7 @@ import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
 import games.Board;
 
-public abstract class EnsemblePlayer implements EvolvedPlayer {
+public abstract class EnsemblePlayer implements EvolvedPlayer, IEvalCountingPlayer {
 	public static final int COMBINATION_MAX = 0x0;
 	public static final int COMBINATION_AVG = 0x1;
 	public static final int COMBINATION_MIN = 0x2;
@@ -24,6 +24,8 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 	protected Integer[] groups;
 	protected EvolvedPlayer subplayer = null;
 	protected int combinationMethod;
+	
+	protected long evalCount;
 	
 	public void setup(EvolutionState state, Parameter base) {
 		EnsembleSystem system = new EnsembleSystem();
@@ -40,6 +42,8 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 			this.combinationMethod = COMBINATION_MIN;
 		else
 			state.output.fatal("Combination method should be one of: max, avg, min");
+		
+		evalCount = 0;
 		
 //		EnsembleIndividual ind = new EnsembleIndividual();
 //		system.randomizeIndividual(state, 0, ind);
@@ -104,6 +108,10 @@ public abstract class EnsemblePlayer implements EvolvedPlayer {
 	public void randomizeWeights(MersenneTwisterFast random, double range) {
 		for (EvolvedPlayer player : playersEnsemble)
 			player.randomizeWeights(random, range);
+	}
+	
+	public long getEvalCount(){
+		return evalCount;
 	}
 
 }

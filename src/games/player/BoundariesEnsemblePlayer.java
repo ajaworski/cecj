@@ -14,7 +14,10 @@ public class BoundariesEnsemblePlayer extends EnsemblePlayer {
 		int playerIndex = 0;
 		while(playerIndex < this.boundaries.length && this.boundaries[playerIndex] > leftPieces)
 			playerIndex++;
+		evalCount++;
 		return this.playersEnsemble[playerIndex].evaluate(board);
 	}
+	
+	
 
 }

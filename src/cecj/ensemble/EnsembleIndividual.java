@@ -3,6 +3,7 @@ package cecj.ensemble;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Species;
+import ec.util.Code;
 import ec.util.Parameter;
 import ec.vector.DoubleVectorIndividual;
 import ec.vector.FloatVectorSpecies;
@@ -120,6 +121,15 @@ public class EnsembleIndividual extends Individual {
 
 	public Parameter defaultBase() {
 		 return EnsembleDefaults.base().push(P_ENSEMBLE_INDIVIDUAL);
+	}
+	
+	@Override
+	public void printIndividual(EvolutionState state, int log) {
+		state.output.println(EVALUATED_PREAMBLE + Code.encode(evaluated), log);
+        fitness.printFitness(state,log);
+        for (Individual ind : individualsEnsemble){
+        	state.output.println( ind.genotypeToString(), log );
+        }
 	}
 	
 }

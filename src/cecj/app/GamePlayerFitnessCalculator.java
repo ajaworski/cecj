@@ -5,9 +5,11 @@ import ec.Individual;
 import ec.util.Parameter;
 import games.BoardGame;
 import games.player.EvolvedPlayer;
+import games.player.IEvalCountingPlayer;
 import games.player.Player;
 import games.scenario.GameScenario;
 import cecj.statistics.ObjectiveFitnessCalculator;
+import cecj.statistics.SimpleEvolutionStateWithEvalCount;
 
 public abstract class GamePlayerFitnessCalculator implements
 		ObjectiveFitnessCalculator {
@@ -92,6 +94,10 @@ public abstract class GamePlayerFitnessCalculator implements
 				gameResult = scenario2.play(boardGame);
 				sum += getPoints(-gameResult);
 			}
+		}
+		
+		if (player instanceof IEvalCountingPlayer && state instanceof SimpleEvolutionStateWithEvalCount){
+			((SimpleEvolutionStateWithEvalCount)state).addEvalCount(((IEvalCountingPlayer)player).getEvalCount());
 		}
 
 		if (playBoth) {
