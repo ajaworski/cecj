@@ -62,7 +62,7 @@ public class OthelloGame implements BoardGame {
 						move.getCol() + dist * OthelloBoard.COL_DIR[dir]);
 			}
 		}
-
+		player.addSingleEval();
 		return result + player.getValue(move.getRow(), move.getCol());
 	}
 

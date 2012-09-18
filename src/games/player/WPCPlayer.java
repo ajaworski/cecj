@@ -151,4 +151,8 @@ public class WPCPlayer implements EvolvedPlayer, IEvalCountingPlayer {
 	public long getEvalCount() {
 		return this.evalCount;
 	}
+	
+	public void addSingleEval(){
+		this.evalCount++;
+	}
 }
