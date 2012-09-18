@@ -67,14 +67,14 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 				//increase == true means increasing the value, decreasing otherwise
 				if (increase){
 					if (index == 0){
-						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + ammount > 62)  //XXX hardcoded!!!
+						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + ammount > 60)  //XXX hardcoded!!!
 							out = false;
 					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] + ammount >= ((EnsembleIndividual)inds[start]).getBoundaries()[index - 1]){
 						out = false;
 					}
 				} else {
 					if (index == ((EnsembleIndividual)inds[start]).getBoundaries().length - 1){
-						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] <= ammount)
+						if (((EnsembleIndividual)inds[start]).getBoundaries()[index] < (ammount + 2)) //XXX hardcoded!!!
 							out = false;
 					} else if (((EnsembleIndividual)inds[start]).getBoundaries()[index] - ammount <= ((EnsembleIndividual)inds[start]).getBoundaries()[index + 1]){
 						out = false;

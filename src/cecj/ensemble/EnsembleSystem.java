@@ -26,7 +26,7 @@ public class EnsembleSystem implements Setup {
 		for (int i = 0; i < ind.getBoundaries().length; i++){
 			tries = 100;
 			do{
-				value = rand.nextInt(62) + 1; //XXX hardcoded!!!
+				value = rand.nextInt(59) + 2; //XXX hardcoded!!!
 				out = true;
 				for (int j = 0; j < i; j++){
 					if (ind.getBoundaries()[j] == value){
