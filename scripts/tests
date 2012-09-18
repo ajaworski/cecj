@@ -1,8 +1,8 @@
-/home/jawora/inf84813/cecj/tests/00_single
-/home/jawora/inf84813/cecj/tests/01_vert_max
-/home/jawora/inf84813/cecj/tests/02_vert_avg
-/home/jawora/inf84813/cecj/tests/03_vert_min
-/home/jawora/inf84813/cecj/tests/04_boundaries_no_mut
-/home/jawora/inf84813/cecj/tests/05_boundaries_swap_mut
-/home/jawora/inf84813/cecj/tests/06_boundaries_bound_mut
-/home/jawora/inf84813/cecj/tests/07_boundaries_both_mut
+/home/inf84813/cecj/tests/00_single
+/home/inf84813/cecj/tests/01_vert_max
+/home/inf84813/cecj/tests/02_vert_avg
+/home/inf84813/cecj/tests/03_vert_min
+/home/inf84813/cecj/tests/04_boundaries_no_mut
+/home/inf84813/cecj/tests/05_boundaries_swap_mut
+/home/inf84813/cecj/tests/06_boundaries_bound_mut
+/home/inf84813/cecj/tests/07_boundaries_both_mut

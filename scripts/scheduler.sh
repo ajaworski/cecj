@@ -35,3 +35,18 @@ do
 	cd $test
 	distribute.sh $NUMBER
 done
+
+while [ 1 = 1]
+do
+	update_jobs_running
+        if [ "$JOBS_RUNNING" = "0" ]
+        then
+        	break
+        fi
+        sleep 60
+done
+echo "Jobs done"
+DATE=`date +"%Y.%m.%d_%H:%M:%S"`
+ssh jawora@hydra.dyndns.biz mkdir /home/jawora/tests/$DATE
+scp -r /home/inf84813/cecj/tests jawora@hydra.dyndns.biz:/home/jawora/tests/$DATE
+echo "Results copied"

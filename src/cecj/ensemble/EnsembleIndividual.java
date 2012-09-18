@@ -1,5 +1,7 @@
 package cecj.ensemble;
 
+import java.util.Arrays;
+
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Species;
@@ -127,6 +129,8 @@ public class EnsembleIndividual extends Individual {
 	public void printIndividual(EvolutionState state, int log) {
 		state.output.println(EVALUATED_PREAMBLE + Code.encode(evaluated), log);
         fitness.printFitness(state,log);
+        state.output.println(Arrays.toString(this.boundaries), log);
+        state.output.println(Arrays.toString(this.groups), log);
         for (Individual ind : individualsEnsemble){
         	state.output.println( ind.genotypeToString(), log );
         }
