@@ -1,6 +1,12 @@
 #!/bin/bash
 JOBS_RUNNING=""
 MAX_JOBS_RUNNING=4
+NUMBER=$1
+
+if [ -z $NUMBER ]
+then
+	NUMBER=1
+fi
 
 update_jobs_running(){
 	JOBS_RUNNING=0
@@ -27,5 +33,5 @@ do
 	done
 	echo "Starting test $test"
 	cd $test
-	distribute.sh
+	distribute.sh $NUMBER
 done
