@@ -38,8 +38,8 @@ ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
 ensemble.species.xover.inner.prob			= 0.0
 ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
-ensemble.species.ensemble-size				= 15
-ensemble.species.boundaries-count			= 14
+ensemble.species.ensemble-size				= 10
+ensemble.species.boundaries-count			= 9
 
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.1

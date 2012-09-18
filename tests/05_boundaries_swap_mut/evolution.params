@@ -20,14 +20,14 @@ eval			= ec.simple.SimpleEvaluator
 breed			= ec.simple.SimpleBreeder
 breed.elite.0	= 5
 
-generations			= 500
+generations			= 5000
 checkpoint			= false
 prefix				= ec
 checkpoint-modulo		= 1
 
 #ENSEMBLES
-ensemble.species.xover.outer.prob			= 0.7
-ensemble.species.mutation.outer.swap-prob		= 0.0
+ensemble.species.xover.outer.prob			= 0.5
+ensemble.species.mutation.outer.swap-prob		= 0.1
 ensemble.species.mutation.outer.bound-change-prob	= 0.0
 ensemble.species.mutation.outer.max-bound-change	= 3
 ensemble.species.mutation.outer.group-change-prob	= 0.0
@@ -77,9 +77,9 @@ pop.subpop.0.species.pipe.source.0.source.0.size 	= 5
 pop.subpop.0.species.pipe.source.0.source.1.size 	= 5
 
 game 			= cecj.app.othello.OthelloGame
-player 			= games.player.SimpleEnsemblePlayer
+player 			= games.player.BoundariesEnsemblePlayer
 player.subplayer 	= games.player.WPCPlayer
-player.combination	= min
+player.combination	= max
 
 eval.problem						= cecj.app.SimpleBoardGameProblem
 eval.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer
@@ -98,4 +98,4 @@ stat.child.0.fitness-calc.repeats		= 500
 stat.child.0.fitness-calc.play-both 		= true
 stat.child.0.fitness-calc.evaluated-randomness 	= 0.1
 stat.child.0.fitness-calc.evaluator-randomness 	= 0.1
-stat.child.0.frequency				= 10
+stat.child.0.frequency				= 100

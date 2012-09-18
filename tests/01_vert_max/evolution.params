@@ -27,19 +27,19 @@ checkpoint-modulo		= 1
 
 #ENSEMBLES
 ensemble.species.xover.outer.prob			= 0.7
-ensemble.species.mutation.outer.swap-prob		= 0.1
-ensemble.species.mutation.outer.bound-change-prob	= 0.1
+ensemble.species.mutation.outer.swap-prob		= 0.0
+ensemble.species.mutation.outer.bound-change-prob	= 0.0
 ensemble.species.mutation.outer.max-bound-change	= 3
-ensemble.species.mutation.outer.group-change-prob	= 0.1
+ensemble.species.mutation.outer.group-change-prob	= 0.0
 ensemble.species.mutation.outer.max-group-change	= 3
 
 ensemble.species.mutation.inner.prob			= 0.05
 ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
-ensemble.species.xover.inner.prob			= 0.2
+ensemble.species.xover.inner.prob			= 0.0
 ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
-ensemble.species.ensemble-size				= 15
-ensemble.species.boundaries-count			= 14
+ensemble.species.ensemble-size				= 10
+ensemble.species.boundaries-count			= 9
 
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.1
@@ -77,7 +77,7 @@ pop.subpop.0.species.pipe.source.0.source.0.size 	= 5
 pop.subpop.0.species.pipe.source.0.source.1.size 	= 5
 
 game 			= cecj.app.othello.OthelloGame
-player 			= games.player.HybridEnsemblePlayer
+player 			= games.player.SimpleEnsemblePlayer
 player.subplayer 	= games.player.WPCPlayer
 player.combination	= max
 
@@ -98,4 +98,4 @@ stat.child.0.fitness-calc.repeats		= 500
 stat.child.0.fitness-calc.play-both 		= true
 stat.child.0.fitness-calc.evaluated-randomness 	= 0.1
 stat.child.0.fitness-calc.evaluator-randomness 	= 0.1
-stat.child.0.frequency				= 8
+stat.child.0.frequency				= 10
