@@ -20,7 +20,7 @@ eval			= ec.simple.SimpleEvaluator
 breed			= ec.simple.SimpleBreeder
 breed.elite.0	= 5
 
-generations			= 5000
+generations			= 1500
 checkpoint			= false
 prefix				= ec
 checkpoint-modulo		= 1
