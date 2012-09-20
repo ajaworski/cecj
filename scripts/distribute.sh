@@ -16,6 +16,7 @@ fi
 
 for i in `cat ~/cecj/scripts/nodes | grep -v "^#"`
 do
-	ssh $i "nohup runlocaljob.sh $NUMBER ${seeds[$NUMBER]} $TEST > /dev/null 2> /dev/null &"
+	echo $i
+	ssh $i "nohup runlocaljob.sh $NUMBER ${seeds[$NUMBER]} $TEST > /dev/null 2> /dev/null & " 
 	let "NUMBER += 1"
 done

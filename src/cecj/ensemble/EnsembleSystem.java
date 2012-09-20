@@ -17,53 +17,72 @@ public class EnsembleSystem implements Setup {
 	}
 	
 	public void randomizeIndividual(EvolutionState state, int thread, EnsembleIndividual ind) {
-		//randomize boundaries
+		if (!(ind.species instanceof EnsembleSpecies))
+			state.output.fatal("OuterCrossover should work on EnsembleSpecies");
+		
+		EnsembleSpecies species = (EnsembleSpecies) ind.species;
 		MersenneTwisterFast rand = state.random[thread];
 		int value;		
 		boolean out;
 		int tries;
+
 		
-		for (int i = 0; i < ind.getBoundaries().length; i++){
-			tries = 100;
-			do{
-				value = rand.nextInt(59) + 2; //XXX hardcoded!!!
-				out = true;
-				for (int j = 0; j < i; j++){
-					if (ind.getBoundaries()[j] == value){
-						out = false;
-						break;
+		//randomize boundaries if bound_mutation is greater than 0, distribute evenly otherwise
+		if (species.getOuterMutationBoundariesChangeProbability() > 0.0){
+			for (int i = 0; i < ind.getBoundaries().length; i++){
+				tries = 100;
+				do{
+					value = rand.nextInt(59) + 2; //XXX hardcoded!!!
+					out = true;
+					for (int j = 0; j < i; j++){
+						if (ind.getBoundaries()[j] == value){
+							out = false;
+							break;
+						}
 					}
-				}
-				tries--;
-			} while (!out && tries >= 0);
-			if (out)
-				ind.getBoundaries()[i] = value;
-			else
-				state.output.fatal("Couldn't randomize boundaries. Consider lowering boundaries count.");
-			
+					tries--;
+				} while (!out && tries >= 0);
+				if (out)
+					ind.getBoundaries()[i] = value;
+				else
+					state.output.fatal("Couldn't randomize boundaries. Consider lowering boundaries count.");
+				
+			}
+			Arrays.sort(ind.getBoundaries(), Collections.reverseOrder());
+		} else {
+			int length = 60 / (ind.getBoundaries().length + 1); //XXX hardcoded
+			for (int i = 0; i < ind.getBoundaries().length; i++){
+				ind.getBoundaries()[i] = 60 - (i+1)*length;
+			}
 		}
-		Arrays.sort(ind.getBoundaries(), Collections.reverseOrder());
 		
-		//Randomize groups
-		for (int i = 0; i < ind.getGroups().length; i++){
-			tries = 100;
-			do{
-				value = rand.nextInt(ind.getIndividualsEnsemble().length - 1);
-				out = true;
-				for (int j = 0; j < i; j++){
-					if (ind.getGroups()[j] == value){
-						out = false;
-						break;
+		//Randomize groups if group_mutation is greater than 0, distribute evenly otherwise
+		if (species.getOuterMutationGroupsChangeProbability() > 0.0){
+			for (int i = 0; i < ind.getGroups().length; i++){
+				tries = 100;
+				do{
+					value = rand.nextInt(ind.getIndividualsEnsemble().length - 1);
+					out = true;
+					for (int j = 0; j < i; j++){
+						if (ind.getGroups()[j] == value){
+							out = false;
+							break;
+						}
 					}
-				}
-				tries--;
-			} while (!out && tries >= 0);
-			if (out)
-				ind.getGroups()[i] = value;
-			else
-				state.output.fatal("Couldn't randomize groups bounds. Consider lowering group count.");
+					tries--;
+				} while (!out && tries >= 0);
+				if (out)
+					ind.getGroups()[i] = value;
+				else
+					state.output.fatal("Couldn't randomize groups bounds. Consider lowering group count.");
+			}
+			Arrays.sort(ind.getGroups());
+		} else {
+			int length = ind.getIndividualsEnsemble().length / (ind.getGroups().length + 1);
+			for (int i = 0; i < ind.getGroups().length; i++){
+				ind.getGroups()[i] = (i+1)*length;
+			}
 		}
-		Arrays.sort(ind.getGroups());
 		
 		//randomize order
 		int end = rand.nextInt(ind.getIndividualsEnsemble().length);

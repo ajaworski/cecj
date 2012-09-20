@@ -20,24 +20,22 @@ update_jobs_running(){
 	done
 }
 
+test="/home/inf84813/cecj/tests/08_hybrid"
 for num in 1 6 11 16 21 26
 do
-	for test in `cat ~/cecj/scripts/tests | grep -v "^#"`
+	while [ 1 = 1 ]
 	do
-		while [ 1 = 1 ]
-		do
-			update_jobs_running
-			if [ "$JOBS_RUNNING" -lt "$MAX_JOBS_RUNNING" ]
-			then
-				break
-			fi
-			sleep 60
-		done
-		echo -n `date`
-		echo " Starting test $test with $num"
-		cd $test
-		distribute.sh $num
+		update_jobs_running
+		if [ "$JOBS_RUNNING" -lt "$MAX_JOBS_RUNNING" ]
+		then
+			break
+		fi
+		sleep 60
 	done
+	echo -n `date `
+	echo "Starting test $test with $num"
+	cd $test
+	distribute.sh $num
 done
 
 exit

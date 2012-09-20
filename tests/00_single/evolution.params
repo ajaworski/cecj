@@ -73,4 +73,4 @@ stat.child.0.fitness-calc.repeats		= 500
 stat.child.0.fitness-calc.play-both 		= true
 stat.child.0.fitness-calc.evaluated-randomness 	= 0.1
 stat.child.0.fitness-calc.evaluator-randomness 	= 0.1
-stat.child.0.frequency				= 8
+stat.child.0.frequency				= 100
