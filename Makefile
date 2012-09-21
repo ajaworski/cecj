@@ -20,32 +20,34 @@ JAVACFLAGS = -target 1.4 -source 1.4 ${FLAGS}
 FLAGS = -g -Xlint:deprecation -Xlint:unchecked
 
 DIRS = \
-src/utils/*.java \
-src/utils/league/*.java \
-src/utils/display/*.java \
-src/ec/display/*.java \
-src/ec/select/*.java \
 src/framsticks/*.java \
-src/cecj/ensemble/*.java \
-src/cecj/utils/*.java \
-src/cecj/ntuple/*.java \
-src/cecj/sampling/*.java \
-src/cecj/app/*.java \
-src/cecj/app/numbers_game/*.java \
-src/cecj/app/go/*.java \
-src/cecj/app/othello/*.java \
-src/cecj/interaction/*.java \
-src/cecj/fitness/*.java \
-src/cecj/eval/*.java \
-src/cecj/problem/*.java \
-src/cecj/subgame/*.java \
-src/cecj/statistics/*.java \
-src/cecj/archive/*.java \
-src/cecj/archive/wojtek/*.java \
 src/games/*.java \
 src/games/player/*.java \
 src/games/player/mlp/*.java \
 src/games/scenario/*.java \
+src/cecj/shaping/*.java \
+src/cecj/problem/*.java \
+src/cecj/subgame/*.java \
+src/cecj/statistics/*.java \
+src/cecj/sampling/*.java \
+src/cecj/ensemble/*.java \
+src/cecj/archive/*.java \
+src/cecj/archive/wojtek/*.java \
+src/cecj/app/*.java \
+src/cecj/app/numbers_game/*.java \
+src/cecj/app/go/*.java \
+src/cecj/app/othello/*.java \
+src/cecj/eval/*.java \
+src/cecj/ntuple/*.java \
+src/cecj/fitness/*.java \
+src/cecj/interaction/*.java \
+src/cecj/utils/*.java \
+src/ec/*.java \
+src/ec/display/*.java \
+src/ec/select/*.java \
+src/utils/*.java \
+src/utils/league/*.java \
+src/utils/display/*.java \
 
 all: base
 
