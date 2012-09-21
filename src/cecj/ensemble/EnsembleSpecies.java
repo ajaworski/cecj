@@ -92,8 +92,10 @@ public class EnsembleSpecies extends Species {
 		this.outerMutationMaxGroupChange = state.parameters.getInt(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_MAX),null,1);
 		this.outerMutationMaxGroupChange = (int) Math.max(this.outerMutationMaxGroupChange, 1);
 		
-		this.ensembleSize = state.parameters.getIntWithDefault(defaultBase().push(P_ENSEMBLE_SIZE), null, 3);
-		this.ensembleSize = (int) Math.max(this.ensembleSize, 3);
+		this.ensembleSize = state.parameters.getIntWithDefault(defaultBase().push(P_ENSEMBLE_SIZE), null, 2);
+		if (this.ensembleSize < 2){
+			state.output.error("Must have at least 2 individuals in an ensemble");
+		}
 		
 		this.boundariesCount = state.parameters.getIntWithDefault(defaultBase().push(P_BOUNDARIES_COUNT), null, (this.ensembleSize - 1));
 		this.boundariesCount = (int) Math.max(this.boundariesCount, 1);

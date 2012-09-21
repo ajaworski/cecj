@@ -25,34 +25,61 @@ checkpoint			= false
 prefix				= ec
 checkpoint-modulo		= 1
 
+#ENSEMBLES
+ensemble.species.xover.outer.prob			= 0.3
+ensemble.species.mutation.outer.swap-prob		= 0.1
+ensemble.species.mutation.outer.bound-change-prob	= 0.1
+ensemble.species.mutation.outer.max-bound-change	= 3
+ensemble.species.mutation.outer.group-change-prob	= 0.0
+ensemble.species.mutation.outer.max-group-change	= 3
+
+ensemble.species.mutation.inner.prob			= 1.0
+ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
+ensemble.species.xover.inner.prob			= 0.1
+ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
+
+ensemble.species.ensemble-size				= 5
+ensemble.species.boundaries-count			= 4
+
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.03
+vector.species.crossover-type	= one
 vector.species.mutation-type	= gauss
 vector.species.mutation-stdev	= 0.25
-vector.species.crossover-type	= one
 vector.species.min-gene		= -1.0
 vector.species.max-gene		= 1.0
+pop.subpop.0.species.subspecies.pipe			= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.subspecies.pipe.source.0		= ec.select.TournamentSelection
+pop.subpop.0.species.subspecies.pipe.source.0.size 	= 5
+pop.subpop.0.species.subspecies.fitness			= ec.simple.SimpleFitness
 
-pop.subpops	= 1
+pop.subpop.0.species.subspecies				= ec.vector.FloatVectorSpecies
+pop.subpop.0.species.subspecies.ind			= ec.vector.DoubleVectorIndividual
+
+
+#END ENSEMBLES
+
+pop.subpops					= 1
 
 pop.subpop.0					= ec.Subpopulation
 pop.subpop.0.size 				= 50
 pop.subpop.0.duplicate-retries 			= 0
 
-pop.subpop.0.species				= ec.vector.FloatVectorSpecies
-pop.subpop.0.species.ind			= ec.vector.DoubleVectorIndividual
+pop.subpop.0.species				= cecj.ensemble.EnsembleSpecies
+pop.subpop.0.species.ind			= cecj.ensemble.EnsembleIndividual
 pop.subpop.0.species.fitness 			= ec.simple.SimpleFitness
 
-pop.subpop.0.species.pipe				= ec.vector.breed.VectorMutationPipeline
-pop.subpop.0.species.pipe.source.0			= ec.vector.breed.VectorCrossoverPipeline
-#pop.subpop.0.species.pipe.source.0.likelihood		= 0.1
+pop.subpop.0.species.pipe				= cecj.ensemble.EnsembleMutationPipeline
+pop.subpop.0.species.pipe.source.0			= cecj.ensemble.EnsembleCrossoverPipeline
 pop.subpop.0.species.pipe.source.0.source.0		= ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.1		= ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.0.size 	= 5
 pop.subpop.0.species.pipe.source.0.source.1.size 	= 5
 
 game 			= cecj.app.othello.OthelloGame
-player 			= games.player.WPCPlayer
+player 			= games.player.BoundariesEnsemblePlayer
+player.subplayer 	= games.player.WPCPlayer
+player.combination	= max
 
 eval.problem						= cecj.app.SimpleBoardGameProblem
 eval.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer
