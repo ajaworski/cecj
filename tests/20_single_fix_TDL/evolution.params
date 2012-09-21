@@ -1,0 +1,88 @@
+parent.0                = /home/inf84813/ECJ/ec/simple/simple.params
+
+verbosity		= 0
+print-unused-params 	= true
+print-unaccesed-params 	= true
+
+breedthreads	= 1
+evalthreads	= 1
+seed.0		= 1987
+seed.1		= 3102
+#seed.2		= 2819
+
+pop			= ec.Population
+state			= cecj.statistics.SimpleEvolutionStateWithEvalCount
+init			= ec.simple.SimpleInitializer
+finish			= ec.simple.SimpleFinisher
+stat 			= ec.simple.SimpleStatistics
+exch			= ec.simple.SimpleExchanger
+
+eval			= cecj.eval.LearningEvaluator
+eval.inner-evaluator	= ec.simple.SimpleEvaluator
+eval.learning-improver	= cecj.app.SelfPlayTDLImprover
+eval.learning-improver.repeats	= 10000
+eval.learning-frequency	= 10000
+eval.learning-prepare	= true
+
+breed			= ec.simple.SimpleBreeder
+breed.elite.0	= 5
+
+generations			= 1500
+checkpoint			= false
+prefix				= ec
+checkpoint-modulo		= 1
+
+vector.species.genome-size	= 64
+vector.species.mutation-prob	= 0.03
+vector.species.mutation-type	= gauss
+vector.species.mutation-stdev	= 0.25
+vector.species.crossover-type	= one
+vector.species.min-gene		= -1.0
+vector.species.max-gene		= 1.0
+
+pop.subpops	= 1
+
+pop.subpop.0					= ec.Subpopulation
+pop.subpop.0.size 				= 50
+pop.subpop.0.duplicate-retries 			= 0
+
+pop.subpop.0.species				= ec.vector.FloatVectorSpecies
+pop.subpop.0.species.ind			= ec.vector.DoubleVectorIndividual
+pop.subpop.0.species.fitness 			= ec.simple.SimpleFitness
+
+pop.subpop.0.species.pipe				= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0			= ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0		= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1		= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.0.size 	= 5
+pop.subpop.0.species.pipe.source.0.source.1.size 	= 5
+
+game 			= cecj.app.othello.OthelloGame
+player 			= games.player.WPCPlayer
+
+eval.problem						= cecj.app.SimpleBoardGameProblem
+eval.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer
+eval.problem.fitness-calc.play-both 			= true
+eval.problem.fitness-calc.repeats			= 50
+eval.problem.fitness-calc.evaluator-randomness 		= 0.1
+eval.problem.fitness-calc.evaluated-randomness 		= 0.1
+
+eval.inner-evaluator.problem						= cecj.app.SimpleBoardGameProblem
+eval.inner-evaluator.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer
+eval.inner-evaluator.problem.fitness-calc.play-both 			= true
+eval.inner-evaluator.problem.fitness-calc.repeats			= 50
+eval.inner-evaluator.problem.fitness-calc.evaluator-randomness 		= 0.1
+eval.inner-evaluator.problem.fitness-calc.evaluated-randomness 		= 0.1
+
+stat.file		= out.stat
+stat.num-children 	= 1
+
+stat.child.0 					= cecj.statistics.BestObjectiveFitnessStatistics
+stat.child.0.fitness-file			= fitness_heur.stat
+stat.child.0.ind-file				= ind.stat
+stat.child.0.fitness-calc 			= cecj.app.othello.OthelloHeuristicPlayer
+stat.child.0.fitness-calc.repeats		= 500
+stat.child.0.fitness-calc.play-both 		= true
+stat.child.0.fitness-calc.evaluated-randomness 	= 0.1
+stat.child.0.fitness-calc.evaluator-randomness 	= 0.1
+stat.child.0.frequency				= 30
