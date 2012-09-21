@@ -28,7 +28,7 @@ public class EnsembleSystem implements Setup {
 
 		
 		//randomize boundaries if bound_mutation is greater than 0, distribute evenly otherwise
-		if (species.getOuterMutationBoundariesChangeProbability() > 0.0){
+		if (species.getOuterMutationBoundariesChangeLikelihood() > 0.0){
 			for (int i = 0; i < ind.getBoundaries().length; i++){
 				tries = 100;
 				do{

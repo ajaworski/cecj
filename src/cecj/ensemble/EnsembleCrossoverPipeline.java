@@ -33,9 +33,9 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 		return NUM_SOURCES;
 	}
 	
-	private void crossover(EnsembleIndividual a, EnsembleIndividual b, MersenneTwisterFast rand){
+	private void crossover(EnsembleIndividual a, EnsembleIndividual b, MersenneTwisterFast rand, float probability){
 		for (int i = 0; i < a.getIndividualsEnsemble().length; i++){
-			if (rand.nextBoolean(0.5)){
+			if (rand.nextBoolean(probability)){
 				Individual tmp = b.getIndividualsEnsemble()[i];
 				b.getIndividualsEnsemble()[i] = a.getIndividualsEnsemble()[i];
 				a.getIndividualsEnsemble()[i] = tmp;
@@ -73,12 +73,12 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 			
 			//outer crossover
 			MersenneTwisterFast rand = state.random[thread];
-			if (rand.nextBoolean(species.getOuterXoverProbability())){
-				crossover(parents[0], parents[1], rand);
+			if (rand.nextBoolean(species.getOuterXoverLikelihood())){
+				crossover(parents[0], parents[1], rand, species.getOuterXoverProbability());
 			}
 			
 			//Inner crossover
-			if (species.getInnerXoverProbability() > 0.0){
+			if (species.getInnerXoverLikelihood() > 0.0){
 				//Proxy, done only once
 				if (ensembleBreedingSources == null){
 					ensembleBreedingSources = new EnsembleBreedingSource[2];
@@ -99,7 +99,7 @@ public class EnsembleCrossoverPipeline extends BreedingPipeline {
 				ensembleBreedingSources[0].setEnsembleIndividual(parents[0]);
 				ensembleBreedingSources[1].setEnsembleIndividual(parents[1]);
 				for (int j = 0; j < ((EnsembleIndividual)parents[0]).getIndividualsEnsemble().length; j++){
-					if (rand.nextBoolean(species.getInnerXoverProbability())){
+					if (rand.nextBoolean(species.getInnerXoverLikelihood())){
 						innerXoverPipeline.produce(2, 2, 0, subpopulation, innerXoveredInds, state, thread);
 						parents[0].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[0];
 						parents[1].getIndividualsEnsemble()[j] = (Individual) innerXoveredInds[1];

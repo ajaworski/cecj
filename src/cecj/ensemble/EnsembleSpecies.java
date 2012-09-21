@@ -20,13 +20,16 @@ public class EnsembleSpecies extends Species {
 	public final static String P_INNER = "inner";
 	public final static String P_OUTER = "outer";
 	
-	public final static String P_SWAP_PROB = "swap-prob";
+	public final static String P_SWAP_LIKE = "swap-likelihood";
+	public final static String P_GROUP_LIKE = "group-change-likelihood";
 	public final static String P_GROUP_PROB = "group-change-prob";
 	public final static String P_GROUP_MAX = "max-group-change";
+	public final static String P_BOUND_LIKE = "bound-change-likelihood";
 	public final static String P_BOUND_PROB = "bound-change-prob";
 	public final static String P_BOUND_MAX = "max-bound-change";
 	
 	public final static String P_PROB = "prob";
+	public final static String P_LIKE = "likelihood";
 	public final static String P_STDEV = "stdev";
 	public final static String P_CLASS = "class";
 
@@ -35,17 +38,20 @@ public class EnsembleSpecies extends Species {
 	private int ensembleSize;
 	private int boundariesCount;
 
-	private float innerXoverProbability;
-	private float innerMutationProbability;
+	private float innerXoverLikelihood;
+	private float innerMutationLikelihood;
 	
 	private String innerMutationClass;
 	private String innerXoverClass;
 	
+	private float outerXoverLikelihood;
 	private float outerXoverProbability;
 	
-	private float outerMutationSwapProbability;
+	private float outerMutationSwapLikelihood;
+	private float outerMutationBoundariesChangeLikelihood;
 	private float outerMutationBoundariesChangeProbability;
 	private int outerMutationMaxBoundaryChange;
+	private float outerMutationGroupsChangeLikelihood;
 	private float outerMutationGroupsChangeProbability;
 	private int outerMutationMaxGroupChange;
 	
@@ -53,12 +59,16 @@ public class EnsembleSpecies extends Species {
 
 	@Override
 	public void setup(EvolutionState state, Parameter base) {
-		this.innerXoverProbability = state.parameters.getFloatWithMax(defaultBase().push(P_XOVER).push(P_INNER).push(P_PROB),null,0.0,1.0);
-		this.innerXoverProbability = (float) Math.max(this.innerXoverProbability, 0.0);
-		this.innerMutationProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_INNER).push(P_PROB),null,0.0,1.0);
-		this.innerMutationProbability = (float) Math.max(this.innerMutationProbability, 0.0);
+		this.innerXoverLikelihood = state.parameters.getFloatWithDefault(defaultBase().push(P_XOVER).push(P_INNER).push(P_LIKE),null,1.0);
+		if (this.innerXoverLikelihood < 0 || this.innerXoverLikelihood > 1)
+			state.output.error("Inner xover likelihood should be in [0;1] range");
 		
-		if (innerMutationProbability > 0.0){
+		this.innerMutationLikelihood = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_INNER).push(P_LIKE),null,1.0);
+		if (this.innerMutationLikelihood < 0 || this.innerMutationLikelihood > 1)
+			state.output.error("Inner mutation likelihood should be in [0;1] range");
+		
+		
+		if (innerMutationLikelihood > 0.0){
 			this.innerMutationClass = state.parameters.getString(defaultBase().push(P_MUTATION).push(P_INNER).push(P_CLASS),null);
 			if (this.innerMutationClass == null)
 				state.output.fatal("Must specify class for inner mutation");
@@ -69,7 +79,7 @@ public class EnsembleSpecies extends Species {
 			}
 		}
 		
-		if (innerXoverProbability > 0.0){
+		if (innerXoverLikelihood > 0.0){
 			this.innerXoverClass = state.parameters.getString(defaultBase().push(P_XOVER).push(P_INNER).push(P_CLASS),null);
 			if (this.innerXoverClass == null)
 				state.output.fatal("Must specify class for inner xover");
@@ -80,16 +90,37 @@ public class EnsembleSpecies extends Species {
 			}
 		}
 		
-		this.outerXoverProbability = state.parameters.getFloatWithMax(defaultBase().push(P_XOVER).push(P_OUTER).push(P_PROB),null,0.0,1.0);
-		this.outerXoverProbability = (float) Math.max(this.outerXoverProbability, 0.0);
-		this.outerMutationSwapProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_SWAP_PROB),null,0.0,1.0);
-		this.outerMutationSwapProbability = (float) Math.max(this.outerMutationSwapProbability, 0.0);
-		this.outerMutationBoundariesChangeProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_PROB),null,0.0,1.0);
-		this.outerMutationBoundariesChangeProbability = (float) Math.max(this.outerMutationBoundariesChangeProbability, 0.0);
+		this.outerXoverLikelihood = state.parameters.getFloatWithDefault(defaultBase().push(P_XOVER).push(P_OUTER).push(P_LIKE),null,1.0);
+		if (this.outerXoverLikelihood < 0 || this.outerXoverLikelihood > 1)
+			state.output.error("Outer xover likelihood should be in [0;1] range");
+		
+		this.outerXoverProbability = state.parameters.getFloatWithDefault(defaultBase().push(P_XOVER).push(P_OUTER).push(P_PROB),null,0.5);
+		if (this.outerXoverLikelihood < 0 || this.outerXoverLikelihood > 1)
+			state.output.error("Outer xover probability should be in [0;1] range");
+		
+		this.outerMutationSwapLikelihood = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_SWAP_LIKE),null,0.1);
+		if (this.outerMutationSwapLikelihood < 0 || this.outerMutationSwapLikelihood > 1)
+			state.output.error("Outer mutation swap likelihood should be in [0;1] range");
+		
+		this.outerMutationBoundariesChangeLikelihood = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_LIKE),null,1.0);
+		if (this.outerMutationBoundariesChangeLikelihood < 0 || this.outerMutationBoundariesChangeLikelihood > 1)
+			state.output.error("Outer mutation boundaries change likelihood should be in [0;1] range");
+		
+		this.outerMutationBoundariesChangeProbability = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_PROB),null,0.03);
+		if (this.outerMutationBoundariesChangeProbability < 0 || this.outerMutationBoundariesChangeProbability > 1)
+			state.output.error("Outer mutation boundaries change probability should be in [0;1] range");
+		
 		this.outerMutationMaxBoundaryChange = state.parameters.getInt(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_MAX),null,1);
 		this.outerMutationMaxBoundaryChange = (int) Math.max(this.outerMutationMaxBoundaryChange, 1);
-		this.outerMutationGroupsChangeProbability = state.parameters.getFloatWithMax(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_PROB),null,0.0,1.0);
-		this.outerMutationGroupsChangeProbability = (float) Math.max(this.outerMutationGroupsChangeProbability, 0.0);
+		
+		this.outerMutationGroupsChangeLikelihood = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_LIKE),null,1.0);
+		if (this.outerMutationGroupsChangeLikelihood < 0 || this.outerMutationGroupsChangeLikelihood > 1)
+			state.output.error("Outer mutation groups change likelihood should be in [0;1] range");
+		
+		this.outerMutationGroupsChangeProbability = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_PROB),null,0.1);
+		if (this.outerMutationGroupsChangeProbability < 0 || this.outerMutationGroupsChangeProbability > 1)
+			state.output.error("Outer mutation groups change probability should be in [0;1] range");
+		
 		this.outerMutationMaxGroupChange = state.parameters.getInt(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_GROUP_MAX),null,1);
 		this.outerMutationMaxGroupChange = (int) Math.max(this.outerMutationMaxGroupChange, 1);
 		
@@ -138,20 +169,28 @@ public class EnsembleSpecies extends Species {
 		this.boundariesCount = boundariesCount;
 	}
 
-	public float getInnerXoverProbability() {
-		return innerXoverProbability;
+	public float getInnerXoverLikelihood() {
+		return innerXoverLikelihood;
 	}
 
-	public void setInnerXoverProbability(float innerXoverProbability) {
-		this.innerXoverProbability = innerXoverProbability;
+	public void setInnerXoverLikelihood(float innerXoverLikelihood) {
+		this.innerXoverLikelihood = innerXoverLikelihood;
 	}
 
-	public float getInnerMutationProbability() {
-		return innerMutationProbability;
+	public float getInnerMutationLikelihood() {
+		return innerMutationLikelihood;
 	}
 
-	public void setInnerMutationProbability(float innerMutationProbability) {
-		this.innerMutationProbability = innerMutationProbability;
+	public void setInnerMutationLikelihood(float innerMutationLikelihood) {
+		this.innerMutationLikelihood = innerMutationLikelihood;
+	}
+
+	public float getOuterXoverLikelihood() {
+		return outerXoverLikelihood;
+	}
+
+	public void setOuterXoverLikelihood(float outerXoverLikelihood) {
+		this.outerXoverLikelihood = outerXoverLikelihood;
 	}
 
 	public float getOuterXoverProbability() {
@@ -162,12 +201,21 @@ public class EnsembleSpecies extends Species {
 		this.outerXoverProbability = outerXoverProbability;
 	}
 
-	public float getOuterMutationSwapProbability() {
-		return outerMutationSwapProbability;
+	public float getOuterMutationSwapLikelihood() {
+		return outerMutationSwapLikelihood;
 	}
 
-	public void setOuterMutationSwapProbability(float outerMutationSwapProbability) {
-		this.outerMutationSwapProbability = outerMutationSwapProbability;
+	public void setOuterMutationSwapLikelihood(float outerMutationSwapLikelihood) {
+		this.outerMutationSwapLikelihood = outerMutationSwapLikelihood;
+	}
+
+	public float getOuterMutationBoundariesChangeLikelihood() {
+		return outerMutationBoundariesChangeLikelihood;
+	}
+
+	public void setOuterMutationBoundariesChangeLikelihood(
+			float outerMutationBoundariesChangeLikelihood) {
+		this.outerMutationBoundariesChangeLikelihood = outerMutationBoundariesChangeLikelihood;
 	}
 
 	public float getOuterMutationBoundariesChangeProbability() {
@@ -186,6 +234,15 @@ public class EnsembleSpecies extends Species {
 	public void setOuterMutationMaxBoundaryChange(
 			int outerMutationMaxBoundaryChange) {
 		this.outerMutationMaxBoundaryChange = outerMutationMaxBoundaryChange;
+	}
+
+	public float getOuterMutationGroupsChangeLikelihood() {
+		return outerMutationGroupsChangeLikelihood;
+	}
+
+	public void setOuterMutationGroupsChangeLikelihood(
+			float outerMutationGroupsChangeLikelihood) {
+		this.outerMutationGroupsChangeLikelihood = outerMutationGroupsChangeLikelihood;
 	}
 
 	public float getOuterMutationGroupsChangeProbability() {

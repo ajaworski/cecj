@@ -42,7 +42,6 @@ src/cecj/ntuple/*.java \
 src/cecj/fitness/*.java \
 src/cecj/interaction/*.java \
 src/cecj/utils/*.java \
-src/ec/*.java \
 src/ec/display/*.java \
 src/ec/select/*.java \
 src/utils/*.java \
