@@ -126,7 +126,7 @@ public class ExternalPerformanceMeter extends ProgressMeter {
 					builder.append(line);
 					builder.append("\n");
 				}
-				externalOpponents.add(NTuplePlayer.readFromString(builder.toString()));
+				//externalOpponents.add(NTuplePlayer.readFromString(builder.toString()));
 				// externalOpponents.add(MLPPlayer.readFromString(builder.toString()));
 			}
 		} catch (FileNotFoundException e) {

@@ -2,12 +2,15 @@ package cecj.app;
 
 import ec.EvolutionState;
 import ec.Individual;
+import ec.simple.SimpleFitness;
 import ec.util.Parameter;
 import games.BoardGame;
+import games.player.EnsemblePlayer;
 import games.player.EvolvedPlayer;
 import games.player.IEvalCountingPlayer;
 import games.player.Player;
 import games.scenario.GameScenario;
+import cecj.ensemble.EnsembleIndividual;
 import cecj.statistics.ObjectiveFitnessCalculator;
 import cecj.statistics.SimpleEvolutionStateWithEvalCount;
 
@@ -33,7 +36,7 @@ public abstract class GamePlayerFitnessCalculator implements
 	protected int repeats;
 
 	private BoardGame boardGame;
-	private EvolvedPlayer playerPrototype;
+	protected EvolvedPlayer playerPrototype;
 
 	private float winPoints;
 	private float drawPoints;
@@ -103,7 +106,7 @@ public abstract class GamePlayerFitnessCalculator implements
 		if (player instanceof IEvalCountingPlayer && state instanceof SimpleEvolutionStateWithEvalCount){
 			((SimpleEvolutionStateWithEvalCount)state).addEvalCount(((IEvalCountingPlayer)player).getEvalCount());
 		}
-
+		
 		if (playBoth) {
 			return sum / (repeats * 2);
 		} else {

@@ -3,10 +3,13 @@ package cecj.statistics;
 import java.io.File;
 import java.io.IOException;
 
+import cecj.ensemble.EnsembleIndividual;
+
 import ec.EvolutionState;
 import ec.Individual;
 import ec.Statistics;
 import ec.util.Parameter;
+import games.player.EnsemblePlayer;
 
 public class BestObjectiveFitnessStatistics extends Statistics {
 
@@ -90,12 +93,20 @@ public class BestObjectiveFitnessStatistics extends Statistics {
 					maxSubjectiveFitnessInd);
 
 			if (state instanceof SimpleEvolutionStateWithEvalCount){
-				state.output.println(state.generation + "\t" + ((SimpleEvolutionStateWithEvalCount)state).getEvalCount() + "\t" + objectiveFitnessOfSubjectivelyBest
+				state.output.print(state.generation + "\t" + ((SimpleEvolutionStateWithEvalCount)state).getEvalCount() + "\t" + objectiveFitnessOfSubjectivelyBest
 						+ "\t" + maxSubjectiveFitness, fitnessStatisticsLog);
 			} else {
-				state.output.println(state.generation + "\t" + objectiveFitnessOfSubjectivelyBest
+				state.output.print(state.generation + "\t" + objectiveFitnessOfSubjectivelyBest
 						+ "\t" + maxSubjectiveFitness, fitnessStatisticsLog);
 			}
+			
+			if (maxSubjectiveFitnessInd instanceof EnsembleIndividual){
+				for (Individual ind : ((EnsembleIndividual)maxSubjectiveFitnessInd).getIndividualsEnsemble()){
+					state.output.print("\t" + ind.fitness.fitness(), fitnessStatisticsLog);
+				}
+			}
+			state.output.println("", fitnessStatisticsLog);
+			
 			state.output.println("Generation: " + state.generation, individualsLog);
 
 			maxSubjectiveFitnessInd.printIndividual(state, individualsLog);

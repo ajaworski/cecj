@@ -2,6 +2,7 @@ package cecj.ensemble;
 
 import ec.BreedingPipeline;
 import ec.EvolutionState;
+import ec.Fitness;
 import ec.Individual;
 import ec.Species;
 import ec.util.Parameter;
@@ -109,6 +110,9 @@ public class EnsembleSpecies extends Species {
 	@Override
 	public Individual newIndividual(EvolutionState state, int thread) {
 		EnsembleIndividual individual = (EnsembleIndividual) (super.newIndividual(state, thread));
+		for (Individual i : individual.getIndividualsEnsemble()){
+			i.fitness = (Fitness) (f_prototype.clone());
+		}
 		ensembleSystem.randomizeIndividual(state, thread, individual);
 		return individual;
 	}
