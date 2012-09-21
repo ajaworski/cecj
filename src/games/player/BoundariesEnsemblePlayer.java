@@ -20,7 +20,5 @@ public class BoundariesEnsemblePlayer extends EnsemblePlayer {
 		evalCount++;
 		return this.getPlayersEnsemble()[playerIndex].evaluate(board);
 	}
-	
-	
 
 }

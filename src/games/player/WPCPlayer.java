@@ -154,6 +154,7 @@ public class WPCPlayer implements EvolvedPlayer, LearningPlayer, IEvalCountingPl
 	
 	public void addSingleEval(){
 		this.evalCount++;
+	}
 
 	@Override
 	public LearningPlayer clone() {

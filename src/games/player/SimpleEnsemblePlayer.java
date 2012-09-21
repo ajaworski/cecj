@@ -39,5 +39,5 @@ public class SimpleEnsemblePlayer extends EnsemblePlayer {
 		}
 		return returnValue;
 	}
-	
+
 }

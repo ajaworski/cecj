@@ -117,5 +117,9 @@ public abstract class EnsemblePlayer implements EvolvedPlayer, IEvalCountingPlay
 	public EvolvedPlayer[] getPlayersEnsemble() {
 		return playersEnsemble;
 	}
+	
+	public void readFromString(String s){
+		
+	}
 
 }
