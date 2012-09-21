@@ -19,7 +19,7 @@ public abstract class EnsemblePlayer implements EvolvedPlayer, IEvalCountingPlay
 	private static final String P_SUBPLAYER = "subplayer";
 	private static final String P_COMBINATION = "combination";
 		
-	protected EvolvedPlayer[] playersEnsemble;
+	private EvolvedPlayer[] playersEnsemble;
 	protected Integer[] boundaries;
 	protected Integer[] groups;
 	protected EvolvedPlayer subplayer = null;
@@ -112,6 +112,10 @@ public abstract class EnsemblePlayer implements EvolvedPlayer, IEvalCountingPlay
 	
 	public long getEvalCount(){
 		return evalCount;
+	}
+
+	public EvolvedPlayer[] getPlayersEnsemble() {
+		return playersEnsemble;
 	}
 
 }

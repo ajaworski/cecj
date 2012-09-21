@@ -16,7 +16,14 @@ init			= ec.simple.SimpleInitializer
 finish			= ec.simple.SimpleFinisher
 stat 			= ec.simple.SimpleStatistics
 exch			= ec.simple.SimpleExchanger
-eval			= ec.simple.SimpleEvaluator
+
+eval			= cecj.eval.LearningEvaluator
+eval.inner-evaluator	= ec.simple.SimpleEvaluator
+eval.learning-improver	= cecj.ensemble.EnsembleSelfPlayTDLImprover
+eval.learning-improver.repeats	= 10000
+eval.learning-frequency	= 10000
+eval.learning-prepare	= true
+
 breed			= ec.simple.SimpleBreeder
 breed.elite.0	= 5
 
@@ -38,8 +45,8 @@ ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
 ensemble.species.xover.inner.prob			= 0.1
 ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
 
-ensemble.species.ensemble-size				= 2
-ensemble.species.boundaries-count			= 1
+ensemble.species.ensemble-size				= 3
+ensemble.species.boundaries-count			= 2
 
 vector.species.genome-size	= 64
 vector.species.mutation-prob	= 0.03
@@ -87,6 +94,13 @@ eval.problem.fitness-calc.play-both 			= true
 eval.problem.fitness-calc.repeats			= 50
 eval.problem.fitness-calc.evaluator-randomness 		= 0.1
 eval.problem.fitness-calc.evaluated-randomness 		= 0.1
+
+eval.inner-evaluator.problem						= cecj.app.SimpleBoardGameProblem
+eval.inner-evaluator.problem.fitness-calc  				= cecj.app.othello.OthelloHeuristicPlayer
+eval.inner-evaluator.problem.fitness-calc.play-both 			= true
+eval.inner-evaluator.problem.fitness-calc.repeats			= 50
+eval.inner-evaluator.problem.fitness-calc.evaluator-randomness 		= 0.1
+eval.inner-evaluator.problem.fitness-calc.evaluated-randomness 		= 0.1
 
 stat.file		= out.stat
 stat.num-children 	= 1

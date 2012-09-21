@@ -35,6 +35,7 @@ public class SelfPlayTDLImprover implements LearningImprover {
 		Parameter playerParam = new Parameter(P_PLAYER);
 		playerPrototype = (EvolvedPlayer) state.parameters.getInstanceForParameter(playerParam,
 				null, EvolvedPlayer.class);
+		playerPrototype.setup(state, new Parameter(P_PLAYER));
 
 		Parameter randomnessParam = base.push(P_RANDOMNESS);
 		randomness = state.parameters.getDoubleWithDefault(randomnessParam, null, 0.1);

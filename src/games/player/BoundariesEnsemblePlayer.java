@@ -6,7 +6,10 @@ import games.SimpleBoard;
 public class BoundariesEnsemblePlayer extends EnsemblePlayer {
 
 	public EvolvedPlayer createEmptyCopy() {
-		return new BoundariesEnsemblePlayer();
+		BoundariesEnsemblePlayer player = new BoundariesEnsemblePlayer();
+		player.subplayer = this.subplayer;
+		player.combinationMethod = this.combinationMethod;
+		return player;
 	}
 
 	public double evaluate(Board board) {
@@ -15,7 +18,7 @@ public class BoundariesEnsemblePlayer extends EnsemblePlayer {
 		while(playerIndex < this.boundaries.length && this.boundaries[playerIndex] > leftPieces)
 			playerIndex++;
 		evalCount++;
-		return this.playersEnsemble[playerIndex].evaluate(board);
+		return this.getPlayersEnsemble()[playerIndex].evaluate(board);
 	}
 	
 	

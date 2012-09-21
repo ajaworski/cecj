@@ -61,6 +61,7 @@ public abstract class GamePlayerFitnessCalculator implements
 		Parameter playerParam = new Parameter(P_PLAYER);
 		playerPrototype = (EvolvedPlayer) state.parameters
 				.getInstanceForParameter(playerParam, null, EvolvedPlayer.class);
+		playerPrototype.setup(state, new Parameter("player"));
 
 		Parameter winPointsParam = base.push(P_WIN_POINTS);
 		winPoints = state.parameters.getFloatWithDefault(winPointsParam, null,
@@ -77,7 +78,6 @@ public abstract class GamePlayerFitnessCalculator implements
 
 	public float calculateObjectiveFitness(EvolutionState state, Individual ind) {
 		EvolvedPlayer player = playerPrototype.createEmptyCopy();
-		player.setup(state, new Parameter("player"));
 		player.readFromIndividual(ind);
 
 		GameScenario scenario1 = getScenario(state, player);
