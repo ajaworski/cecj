@@ -97,6 +97,7 @@ public class BestObjectiveFitnessStatistics extends Statistics {
 						+ "\t" + maxSubjectiveFitness, fitnessStatisticsLog);
 			}
 			state.output.println("Generation: " + state.generation, individualsLog);
+
 			maxSubjectiveFitnessInd.printIndividual(state, individualsLog);
 		}
 
