@@ -20,7 +20,7 @@ exch			= ec.simple.SimpleExchanger
 eval			= cecj.eval.LearningEvaluator
 eval.inner-evaluator	= ec.simple.SimpleEvaluator
 eval.learning-improver	= cecj.ensemble.EnsembleSelfPlayTDLImprover
-eval.learning-improver.repeats	= 10000
+eval.learning-improver.repeats	= 500
 eval.learning-frequency	= 10000
 eval.learning-prepare	= true
 
