@@ -1,4 +1,4 @@
-parent.0                = /home/jawora/ECJ/ec/simple/simple.params
+parent.0                = /home/inf84813/ECJ/ec/simple/simple.params
 
 verbosity		= 0
 print-unused-params 	= true

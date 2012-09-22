@@ -35,6 +35,8 @@ public class EnsembleSpecies extends Species {
 
 	public static final String P_SYSTEM = "system";
 	
+	public static final String P_BREED_ELITE = "breed-elite";
+	
 	private int ensembleSize;
 	private int boundariesCount;
 
@@ -56,6 +58,8 @@ public class EnsembleSpecies extends Species {
 	private int outerMutationMaxGroupChange;
 	
 	private EnsembleSystem ensembleSystem;
+	
+	private boolean breedElite;
 
 	@Override
 	public void setup(EvolutionState state, Parameter base) {
@@ -136,6 +140,8 @@ public class EnsembleSpecies extends Species {
 				
 		ensembleSystem = new EnsembleSystem();
 		ensembleSystem.setup(state, EnsembleDefaults.base().push("P_SYSTEM"));
+		
+		this.breedElite = state.parameters.getBoolean(defaultBase().push(P_BREED_ELITE), null, false);
 	}
 	
 	@Override
@@ -276,6 +282,14 @@ public class EnsembleSpecies extends Species {
 
 	public void setInnerXoverClass(String innerXoverClass) {
 		this.innerXoverClass = innerXoverClass;
+	}
+
+	public boolean isBreedElite() {
+		return breedElite;
+	}
+
+	public void setBreedElite(boolean breedElite) {
+		this.breedElite = breedElite;
 	}
 
 
