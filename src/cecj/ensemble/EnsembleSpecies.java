@@ -110,7 +110,7 @@ public class EnsembleSpecies extends Species {
 		if (this.outerMutationBoundariesChangeLikelihood < 0 || this.outerMutationBoundariesChangeLikelihood > 1)
 			state.output.error("Outer mutation boundaries change likelihood should be in [0;1] range");
 		
-		this.outerMutationBoundariesChangeProbability = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_PROB),null,0.03);
+		this.outerMutationBoundariesChangeProbability = state.parameters.getFloatWithDefault(defaultBase().push(P_MUTATION).push(P_OUTER).push(P_BOUND_PROB),null,0.1);
 		if (this.outerMutationBoundariesChangeProbability < 0 || this.outerMutationBoundariesChangeProbability > 1)
 			state.output.error("Outer mutation boundaries change probability should be in [0;1] range");
 		
