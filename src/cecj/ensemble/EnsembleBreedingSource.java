@@ -74,5 +74,13 @@ public class EnsembleBreedingSource extends BreedingSource{
 		this.currentIndex = 0;
 		this.ensembleIndividual = ensembleIndividual;
 	}
+	
+	/**
+	 * Use with being extra-careful.
+	 * @param index
+	 */
+	public void setCurrentIndex(int index){
+		this.currentIndex = index;
+	}
 
 }

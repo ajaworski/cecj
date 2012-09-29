@@ -159,10 +159,22 @@ public class EnsembleMutationPipeline extends BreedingPipeline {
 			}
 			
 			ensembleBreedingSource.setEnsembleIndividual((EnsembleIndividual)inds[start]);
-			for (int i = 0; i < ((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length; i++){
+			
+			if (species.isInnerMutationAll()){
+				for (int i = 0; i < ((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length; i++){
+					if (rand.nextBoolean(species.getInnerMutationLikelihood())){
+						innerMutationPipeline.produce(1, 1, 0, subpopulation, innerMutatedInds, state, thread);
+						((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[i] = (Individual) innerMutatedInds[0];
+					}
+				}
+			} else {
 				if (rand.nextBoolean(species.getInnerMutationLikelihood())){
+					int index = rand.nextInt(((EnsembleIndividual)inds[start]).getIndividualsEnsemble().length);
+					
+					ensembleBreedingSource.setCurrentIndex(index);
+					
 					innerMutationPipeline.produce(1, 1, 0, subpopulation, innerMutatedInds, state, thread);
-					((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[i] = (Individual) innerMutatedInds[0];
+					((EnsembleIndividual)inds[start]).getIndividualsEnsemble()[index] = (Individual) innerMutatedInds[0];
 				}
 			}
 		}

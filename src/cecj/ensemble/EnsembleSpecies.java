@@ -30,8 +30,8 @@ public class EnsembleSpecies extends Species {
 	
 	public final static String P_PROB = "prob";
 	public final static String P_LIKE = "likelihood";
-	public final static String P_STDEV = "stdev";
 	public final static String P_CLASS = "class";
+	public final static String P_ALL = "all";
 
 	public static final String P_SYSTEM = "system";
 	
@@ -56,6 +56,9 @@ public class EnsembleSpecies extends Species {
 	private float outerMutationGroupsChangeLikelihood;
 	private float outerMutationGroupsChangeProbability;
 	private int outerMutationMaxGroupChange;
+	
+	private boolean innerMutationAll;
+	private boolean innerXoverAll;
 	
 	private EnsembleSystem ensembleSystem;
 	
@@ -142,6 +145,8 @@ public class EnsembleSpecies extends Species {
 		ensembleSystem.setup(state, EnsembleDefaults.base().push("P_SYSTEM"));
 		
 		this.breedElite = state.parameters.getBoolean(defaultBase().push(P_BREED_ELITE), null, false);
+		this.innerXoverAll = state.parameters.getBoolean(defaultBase().push(P_XOVER).push(P_INNER).push(P_ALL),null,true);
+		this.innerMutationAll = state.parameters.getBoolean(defaultBase().push(P_MUTATION).push(P_INNER).push(P_ALL),null,true);
 	}
 	
 	@Override
@@ -290,6 +295,22 @@ public class EnsembleSpecies extends Species {
 
 	public void setBreedElite(boolean breedElite) {
 		this.breedElite = breedElite;
+	}
+
+	public boolean isInnerMutationAll() {
+		return innerMutationAll;
+	}
+
+	public void setInnerMutationAll(boolean innerMutationAll) {
+		this.innerMutationAll = innerMutationAll;
+	}
+
+	public boolean isInnerXoverAll() {
+		return innerXoverAll;
+	}
+
+	public void setInnerXoverAll(boolean innerXoverAll) {
+		this.innerXoverAll = innerXoverAll;
 	}
 
 

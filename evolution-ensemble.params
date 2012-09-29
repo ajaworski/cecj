@@ -36,10 +36,12 @@ ensemble.species.mutation.outer.group-change-likelihood	= 0.0
 ensemble.species.mutation.outer.group-change-prob	= 0.0
 ensemble.species.mutation.outer.max-group-change	= 3
 
-ensemble.species.mutation.inner.likelihood		= 0.0
+ensemble.species.mutation.inner.likelihood		= 1.0
 ensemble.species.mutation.inner.class			= ec.vector.breed.VectorMutationPipeline
-ensemble.species.xover.inner.likelihood			= 0.0
+ensemble.species.mutation.inner.all			= false
+ensemble.species.xover.inner.likelihood			= 1.0
 ensemble.species.xover.inner.class			= ec.vector.breed.VectorCrossoverPipeline
+ensemble.species.xover.inner.all			= false
 
 ensemble.species.ensemble-size				= 3
 ensemble.species.boundaries-count			= 2
